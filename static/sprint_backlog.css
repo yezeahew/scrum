@@ -1,0 +1,765 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 3px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #F99417; /* Color of the thumb (the draggable part) */
+  border-radius: 10px; /* Round the edges of the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #0056b3; /* Color when hovered */
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent; /* Color of the track (the non-draggable part) */
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 250px;
+    background-color: #F99417;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.sidebar-title {
+    text-align: center;
+    margin-top: 22px;
+    margin-bottom: 50px;
+    font-size: 33px;
+    font-family:'Courier New', Courier, monospace;
+    font-weight:900 ;
+}
+
+.top-menu {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.bottom-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+/* side menu text (product backlog etc)*/
+nav a {
+    font-size: 20px;
+    display: block;
+    text-align: left;
+    padding-left: 10px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: rgba(245, 245, 245, 0.827);
+}
+
+nav a:hover {
+    color: white !important;
+}
+
+/* main section */
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+/* Product Backlog */
+.content-title {
+    color: #F99417;
+    margin: 0;
+    margin-top: 20px;
+    font-size: 35px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.header-buttons {
+    display: flex;
+    align-items: center;
+    margin-right: 50px;
+}
+
+
+/* create task btn */
+.create-task-btn {
+    background-color: #F99417 !important;
+    color: white !important;
+    border: none !important;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+}
+
+.view-sprint-btn {
+    background-color: #F99417 !important;
+    color: white !important;
+    border: none !important;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+}
+
+.create-task-btn:hover {
+    background-color: #E88315 !important;
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 1px solid #F99417;
+}
+
+.tasks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* To give space between tasks */
+}
+
+.tasks-list .task-card {
+    position:absolute;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content:left;
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0  4px 8px rgba(0, 0, 0, 0.15);
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.task-card {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+}
+
+.task-card > p, .task-card > .tags {
+    display: inline-block;
+    margin-right: 10px; /* space between elements */
+    
+}
+
+.taskCard {
+    border: 1px solid #000;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: black;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.task-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* task card */
+/* name of task card */
+.task-card h3 {
+    flex-basis: 100%;
+    margin-bottom: 10px;
+    font-size: 30px;
+}
+
+/* Style for the priority */
+.task-card p {
+    margin-right: 10px; /* Add some spacing to the right of the priority */
+}
+/* priority tag*/
+.priority-tags-container {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+}
+
+.priority-tags-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.priority-low {
+    width: 55px;
+    border: 2px solid green;
+    border-radius: 20px;
+    padding: 1px;
+    color: green;
+    font-size: small;
+    font-weight: bold;
+    text-align: center;
+}
+
+.priority-medium {
+    width: 55px;
+    border: 2px solid yellow;
+    border-radius: 20px;
+    background-color: #ffffff;
+    padding: 1px;
+    color: yellow;
+    font-size: small;
+    font-weight: bold;
+    text-align: center;
+}
+
+.priority-important {
+    width: 55px;
+    border: 2px solid orange;
+    border-radius: 20px;
+    background-color: #ffffff;
+    padding: 1px;
+    color: orange;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.priority-urgent {
+    width: 55px;
+    border: 2px solid red;
+    border-radius: 20px;
+    padding: 1px;
+    color: red;
+    font-size: small;
+    font-weight: bold;
+    text-align: center;
+}
+
+.input-label {
+    font-size: 20px;
+    color: #000000;
+    font-family: 'Inter', sans-serif !important;
+}
+
+/* tags */
+.tag {
+    margin-top: 0;
+    align-items:start;
+    border: 1px solid black;
+    background-color: #ffffff;
+    padding: 1.3px 6px;
+    margin-left: 7px;
+    border-radius: 20px;
+}
+
+.moretags{
+    margin-top: 0;
+    align-items:start;
+    border: 1px solid black;
+    background-color: #ffffff;
+    padding: 1.3px 6px;
+    margin-left: 7px;
+    border-radius: 20px;
+}
+
+.task-card .popup-btn {
+    margin-left: 15px;
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* story points */
+.story-point-section {
+    position: absolute;
+    top: 100%;
+    right: 15px;
+    transform: translateY(-100%);
+    display: flex;
+    align-items: center;
+}
+
+.story-points-label {
+    position:absolute;
+    right: 5px;
+    font-weight: 600;
+    font-size: 12px;
+    transform: translateY(-87%);
+    margin-right: 45px !important; /* spacing */
+    right : 0px !important;
+    transform: translateY(-87%);
+    margin-right: 45px !important; /* spacing */
+    right : 0px !important;
+}
+
+.story-points {
+    position: absolute; 
+    right: 15px;
+    display: inline-block;
+    background-color: white;
+    border: 1px solid black;
+    color: #F99417;
+    font-size: 20px;
+    font-weight: 600;
+    border-radius: 50%;
+    padding: 2px 12px;
+    margin-left: 10px;
+    transform: translateY(-45%);
+    right: 3px !important;
+    transform: translateY(-45%);
+    right: 3px !important;
+}
+
+/* filter button */
+.filter-button {
+    height: 34px;
+    background-color: white; 
+    color: black; 
+    border: 1px solid black; 
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s; 
+    display: block;
+    width: 100%; 
+    margin-left: 5px;
+}
+
+/* sorting button*/
+.sorting-button {
+    background-color: white; 
+    color: black; 
+    border: 1px solid black; 
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s; /* transition effect for background-color */
+    display: block;
+    width: 100%;
+    margin-right: 5px;
+}
+
+/* icon of filter& sorting button */
+.filter-button i, .sorting-button i {
+    font-size: 20px; 
+}
+
+/* Change button color to orange on hover */
+.filter-button:hover, .sorting-button:hover {
+    background-color: #f99417; 
+    color: white; 
+}
+
+/* Dropdown container */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown content */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border: 1px solid black; /* Black border for consistency */
+    border-radius: 5px;
+}
+
+/* Dropdown container for filter buttons */
+.filter-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown options */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s; /* transition effect for background-color */
+}
+
+.dropdown-content a:hover {
+    background-color: #f99417; /* Orange color on hover */
+    color: white; /* White font color on hover */
+}
+
+/* Show dropdown when the button is clicked */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Style tag buttons in the filter dropdown */
+.tag-button {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin: 5px 0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%; /* Full width of the container */
+    display: block; /* Displays tag buttons as block elements */
+}
+
+
+.tag-button:hover {
+    background-color: #f99417;
+    color: white;
+}
+
+/* Container for task status cards */
+.task-status-container {
+    display: flex;
+    flex-wrap: wrap; /* Allow cards to wrap to the next row if the screen is narrow */
+    justify-content: space-between; /* Distribute cards evenly in the available space */
+}
+
+/* Style for the task status cards */
+.notStarted-task-status-box {
+    width: calc(33.33% - 10px); /* Set the width of each card (adjust as needed) */
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    margin-bottom: 20px;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Style for the task card title (e.g., "Not Started", "In Progress", "Completed") */
+.notStarted-task-status-box h3 {
+    font-size: 18px;
+    margin: 0;
+    padding: 10px 0;
+    background-color: #ffffff;
+    text-align: left;
+    border-radius: 5px 5px 0 0;
+    font-weight: bold;
+}
+
+/* Additional styling for the task cards if needed */
+.notStarted-task-status-box p {
+    font-size: 16px;
+    margin: 0;
+    padding: 5px 0;
+}
+
+/* Style for the task status cards */
+.inProgress-task-status-box {
+    width: calc(33.33% - 10px); /* Set the width of each card (adjust as needed) */
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    margin-bottom: 20px;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Style for the task card title (e.g., "Not Started", "In Progress", "Completed") */
+.inProgress-task-status-box h3 {
+    font-size: 18px;
+    margin: 0;
+    padding: 10px 0;
+    background-color: #ffffff;
+    text-align: left;
+    border-radius: 5px 5px 0 0;
+    font-weight: bold;
+}
+
+/* Additional styling for the task cards if needed */
+.inProgress-task-status-box p {
+    font-size: 16px;
+    margin: 0;
+    padding: 5px 0;
+}
+
+/* Style for the task status cards */
+.completed-task-status-box {
+    width: calc(33.33% - 10px); /* Set the width of each card (adjust as needed) */
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    margin-bottom: 20px;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Style for the task card title (e.g., "Not Started", "In Progress", "Completed") */
+.completed-task-status-box h3 {
+    font-size: 18px;
+    margin: 0;
+    padding: 10px 0;
+    background-color: #ffffff;
+    text-align: left;
+    border-radius: 5px 5px 0 0;
+    font-weight: bold;
+}
+
+/* Additional styling for the task cards if needed */
+.completed-task-status-box p {
+    font-size: 16px;
+    margin: 0;
+    padding: 5px 0;
+}
+.not-started-task-list{
+    overflow-y: auto;
+}
+
+.in-progress-task-list{
+    overflow-y: auto;
+}
+
+.completed-task-list{
+    overflow-y: auto;
+}
+
+.add-task-btn {
+
+    background-color: #F99417 !important;
+    color: white !important;
+    border: none !important;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+}
+
+.modal-content-custom{
+    width: 60%;
+    margin: 0 auto; /* Horizontally center the modal */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Vertically center the modal */
+}
+
+.comfirm-sprint-tasks-button{
+    background-color: #F99417 !important;
+    color: white !important;
+    border: none !important;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+}
+.backlog-tasks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* To give space between tasks */
+    height: 400px;
+    overflow-y: auto;
+}
+
+.backlog-tasks-list .backlog-task-card {
+    position:absolute;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content: left;
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0  4px 8px rgba(0, 0, 0, 0.15);
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.backlog-task-card {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+}
+
+.backlog-task-card > p, .backlog-task-card > .tags {
+    display: inline-block;
+    margin-right: 2px; /* space between elements */
+    
+}
+
+.taskCard {
+    border: 1px solid #000;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: black;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.backlog-task-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* task card */
+/* name of task card */
+.backlog-task-card h3 {
+    flex-basis: 100%;
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Style for the priority */
+.backlog-task-card p {
+    margin-right: 10px; /* Add some spacing to the right of the priority */
+}
+
+.backlog-task-card .task-checkbox{
+    box-shadow: 0  6px 10px rgba(0, 0, 0, 0.15);
+    height: 60px !important;
+    width: 60px !important;
+    position: absolute!important;
+    right: 40px !important;
+    top: 20px !important;
+    align-self: flex-end !important; /* Aligns to the bottom */
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    background-color: #eaeaea;
+    margin: 0;
+    font: inherit;
+    display: grid;
+    border: 3px solid currentColor;
+    border-radius: 10px;
+    place-content: center;
+}
+
+input[type="checkbox"]::before {
+    content: "";
+    width: 45px;
+    height: 45px;
+    transform: scale(0);
+    transition: 220ms transform ease-in-out;
+    box-shadow: inset 1em 1em var(--form-control-color);
+    border-radius: 10px;
+    background-color: chartreuse;
+}
+
+input[type="checkbox"]:checked::before {
+    transform: scale(1);
+}
+
+/*Sprint Backlog task Card*/
+.sprint-task-card {
+    position:absolute;
+    display: flex;
+    flex-direction: row;
+    gap: 0px;
+    align-items: center;
+    justify-content: left;
+    background-color: #F2F3F5;
+    padding: 8px;
+    border-radius: 10px;
+    box-shadow: 0  4px 8px rgba(0, 0, 0, 0.15);
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    position: relative; 
+}
+
+.sprint-task-card > p, .sprint-task-card > .tags {
+    font-size: small;
+    display: inline-block;
+    margin-right: 2px; /* space between elements */
+    
+}
+
+.sprint-task-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* task card */
+/* name of task card */
+.sprint-task-card h3 {
+    background-color: #F2F3F5;
+    flex-basis: 100%;
+    margin-bottom: 4px;
+    font-size: small;
+    font-weight: bold;
+}
+
+/* Style for the priority */
+.sprint-task-card p {
+    font-size: small;
+    margin-right: 10px; /* Add some spacing to the right of the priority */
+}
+
+.log-hours{
+    background-color: #F99417 !important;
+    color: white !important;
+    border: none !important;
+    padding: 0px 11px !important;
+    border-radius: 40px !important;
+    transition: background-color 0.3s !important;
+    margin-right: 0px !important;
+    justify-self: right !important;
+    position: absolute!important;
+    right: 10px !important;
+    align-self: flex-end !important; /* Aligns to the bottom */
+    display: flex !important;
+}
+
+.not-started-sprint-status-indicator{
+    height: auto;
+    width: 110px;
+    text-align: center;
+    color: white ;
+    background-color: #F99417;
+    transform: translateX(-30%);
+    border-radius: 10px;
+}
+
+.active-sprint-status-indicator{
+    height: auto;
+    width: 110px;
+    color: white ;
+    text-align: center;
+    background-color: #F99417;
+    transform: translateX(-30%);
+    border-radius: 10px;
+}
+
+.completed-sprint-status-indicator{
+    height: auto;
+    width: 110px;
+    color: white ;
+    text-align: center;
+    background-color: #F99417;
+    transform: translateX(-30%);
+    border-radius: 10px;
+}
+
+.dark-mode .not-started-sprint-status-indicator, .dark-mode .add-task-btn, .dark-mode .view-sprint-btn{
+    background-color: #cc0001 !important;
+    color: white !important;
+}
+
+

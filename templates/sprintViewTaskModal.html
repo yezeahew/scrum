@@ -1,0 +1,501 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- <div id="taskData" data-task="{{ fetchedTask | tojson }}"></div> -->
+
+<div class="modal fade" id="sprint-view-task-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="view-task" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl modal-fullscreen-md-down modal-dialog-scrollable">
+
+    <!-- main modal content -->
+    <div class="modal-content" style="background-color: #f2f3f5;">
+      <div class="modal-header justify-content-between" style="background-color: #FF9417;">
+        <h1 class="modal-title fs-5" id="view-task" style="color: #ffffff;">View Task</h1>
+        <div>
+          <button type="button" class="btn-delete-close" id="revoke-button" aria-label="Revoke">
+            <i class="bi bi-arrow-return-left" style="font-size: 22px;"></i>
+          </button>
+          <button type="button" class="btn-delete-close" data-bs-dismiss="modal" aria-label="Close">
+            <i class="bi bi-x-lg" style="font-size: 22px;"></i>
+          </button>
+        </div>
+
+      </div>
+      <!-- accumalation of effort content -->
+      <div class="modal-body" id="aoe-graph-body" style="display: none;">
+        <div class="row">
+          <canvas id="aoe-graph" class="img-fluid"></canvas>
+        </div>
+        <div class="row create-button-row">
+          <div class="col">
+            <button type="button" id="back-button" class="btn btn-create-button">Back</button>
+          </div>
+        </div>
+      </div>
+      <form class="modal-body" id="task-form">
+        <div class="row">
+          <div class="col-12 col-xl-6">
+            <div class="row px-3 py-1">
+              <div class="container task-create">
+                <div class="row">
+                  <div class="input-label">Task Name</div>
+                </div>
+                <div class="row px-2">
+                  <input type="text" class="form-control" style="font-size: 30px;" id="task-name-input"
+                    placeholder="Name" onchange="CheckName()" disabled>
+                  <div class="invalid" id="invalid-task-name" style="display: none;">! Please enter a task name.</div>
+                </div>
+              </div>
+            </div>
+            <div class="row px-3 py-1">
+              <div class="container task-create">
+                <div class="row">
+                  <div class="input-label">Task Type</div>
+                </div>
+                <div class="row">
+                  <div class="col-auto px-2">
+                    <input type="radio" class="btn-check" name="task-type-option" id="story" autocomplete="off"
+                      disabled>
+                    <label class="btn btn-custom-normal" for="story">Story</label>
+                  </div>
+                  <div class="col-auto px-2">
+                    <input type="radio" class="btn-check" name="task-type-option" id="bug" autocomplete="off" disabled>
+                    <label class="btn btn-custom-normal" for="bug">Bug</label>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div class="row px-3 py-1">
+              <div class="container task-create">
+                <div class="row">
+                  <div class="input-label">Numerical Storypoints</div>
+                  <div class="row px-3">
+                    <div class="col-auto p-1">
+                      <input type="radio" class="btn-check" name="numerical-storypoints" id="1" autocomplete="off"
+                        disabled>
+                      <label class="btn btn-custom-points" for="1">1</label>
+                    </div>
+                    <div class="col-auto p-1">
+                      <input type="radio" class="btn-check" name="numerical-storypoints" id="2" autocomplete="off"
+                        disabled>
+                      <label class="btn btn-custom-points" for="2">2</label>
+                    </div>
+                    <div class="col-auto p-1">
+                      <input type="radio" class="btn-check" name="numerical-storypoints" id="3" autocomplete="off"
+                        disabled>
+                      <label class="btn btn-custom-points" for="3">3</label>
+                    </div>
+                    <div class="col-auto p-1">
+                      <input type="radio" class="btn-check" name="numerical-storypoints" id="4" autocomplete="off"
+                        disabled>
+                      <label class="btn btn-custom-points" for="4">4</label>
+                    </div>
+                    <div class="col-auto p-1">
+                      <input type="radio" class="btn-check" name="numerical-storypoints" id="5" autocomplete="off"
+                        disabled>
+                      <label class="btn btn-custom-points" for="5">5</label>
+                    </div>
+                    <div class="col-auto p-1">
+                      <input type="radio" class="btn-check" name="numerical-storypoints" id="6" autocomplete="off"
+                        disabled>
+                      <label class="btn btn-custom-points" for="6">6</label>
+                    </div>
+                    <div class="col-auto p-1">
+                      <input type="radio" class="btn-check" name="numerical-storypoints" id="7" autocomplete="off"
+                        disabled>
+                      <label class="btn btn-custom-points" for="7">7</label>
+                    </div>
+                    <div class="col-auto p-1">
+                      <input type="radio" class="btn-check" name="numerical-storypoints" id="8" autocomplete="off"
+                        disabled>
+                      <label class="btn btn-custom-points" for="8">8</label>
+                    </div>
+                    <div class="col-auto p-1">
+                      <input type="radio" class="btn-check" name="numerical-storypoints" id="9" autocomplete="off"
+                        disabled>
+                      <label class="btn btn-custom-points" for="9">9</label>
+                    </div>
+                    <div class="col-auto p-1">
+                      <input type="radio" class="btn-check" name="numerical-storypoints" id="10" autocomplete="off"
+                        disabled>
+                      <label class="btn btn-custom-points" for="10">10</label>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row px-3 py-1">
+              <div class="container task-create">
+                <div class="row">
+                  <div class="input-label">Tags</div>
+                </div>
+                <div class="row px-1">
+                  <div class="col-auto p-1">
+                    <input type="checkbox" class="btn-check" name="tags" id="front-end" autocomplete="off"
+                      onchange="CheckTags()" disabled>
+                    <label class="btn btn-custom-normal" for="front-end">Front End</label>
+                  </div>
+                  <div class="col-auto p-1">
+                    <input type="checkbox" class="btn-check" name="tags" id="back-end" autocomplete="off"
+                      onchange="CheckTags()" disabled>
+                    <label class="btn btn-custom-normal" for="back-end">Back End</label>
+                  </div>
+                  <div class="col-auto p-1">
+                    <input type="checkbox" class="btn-check" name="tags" id="testing" autocomplete="off"
+                      onchange="CheckTags()" disabled>
+                    <label class="btn btn-custom-normal" for="testing">Testing</label>
+                  </div>
+                  <div class="col-auto p-1">
+                    <input type="checkbox" class="btn-check" name="tags" id="database" autocomplete="off"
+                      onchange="CheckTags()" disabled>
+                    <label class="btn btn-custom-normal" for="database">Database</label>
+                  </div>
+                  <div class="col-auto p-1">
+                    <input type="checkbox" class="btn-check" name="tags" id="ui" autocomplete="off"
+                      onchange="CheckTags()" disabled>
+                    <label class="btn btn-custom-normal" for="ui">UI</label>
+                  </div>
+                  <div class="col-auto p-1">
+                    <input type="checkbox" class="btn-check" name="tags" id="ux" autocomplete="off"
+                      onchange="CheckTags()" disabled>
+                    <label class="btn btn-custom-normal" for="ux">UX</label>
+                  </div>
+                  <div class="col-auto p-1">
+                    <input type="checkbox" class="btn-check" name="tags" id="api" autocomplete="off"
+                      onchange="CheckTags()" disabled>
+                    <label class="btn btn-custom-normal" for="api">API</label>
+                  </div>
+                  <div class="col-auto p-1">
+                    <input type="checkbox" class="btn-check" name="tags" id="framework" autocomplete="off"
+                      onchange="CheckTags()" disabled>
+                    <label class="btn btn-custom-normal" for="framework">Framework</label>
+                  </div>
+                  <div class="invalid" id="invalid-tags" style="display: none;">! Please select at least one tag.</div>
+                </div>
+              </div>
+            </div>
+            <div class="row px-3 py-1">
+              <div class="container task-create">
+                <div class="row">
+                  <div class="input-label">Task Priority</div>
+                </div>
+                <div class="row px-1">
+                  <div class="col-auto p-1">
+                    <input type="radio" class="btn-check" name="priority-option" id="low" autocomplete="off" disabled>
+                    <label class="btn btn-custom-low" for="low">Low</label>
+                  </div>
+                  <div class="col-auto p-1">
+                    <input type="radio" class="btn-check" name="priority-option" id="medium" autocomplete="off"
+                      disabled>
+                    <label class="btn btn-custom-medium" for="medium">Medium</label>
+                  </div>
+                  <div class="col-auto p-1">
+                    <input type="radio" class="btn-check" name="priority-option" id="important" autocomplete="off"
+                      disabled>
+                    <label class="btn btn-custom-important" for="important">Important</label>
+                  </div>
+                  <div class="col-auto p-1">
+                    <input type="radio" class="btn-check" name="priority-option" id="urgent" autocomplete="off"
+                      disabled>
+                    <label class="btn btn-custom-urgent" for="urgent">Urgent</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-xl-6">
+            <div class="row px-3 py-1">
+              <div class="container task-create">
+                <div class="row">
+                  <div class="input-label">Task Status</div>
+                </div>
+                <div class="row px-1">
+                  <div class="col-auto p-1">
+                    <input type="radio" class="btn-check" name="task-status" id="not-started" autocomplete="off"
+                      disabled>
+                    <label class="btn btn-custom-normal" for="not-started">Not Started</label>
+                  </div>
+                  <div class="col-auto p-1">
+                    <input type="radio" class="btn-check" name="task-status" id="in-progress" autocomplete="off"
+                      disabled>
+                    <label class="btn btn-custom-normal" for="in-progress">In Progress</label>
+                  </div>
+                  <div class="col-auto p-1">
+                    <input type="radio" class="btn-check" name="task-status" id="completed" autocomplete="off" disabled>
+                    <label class="btn btn-custom-normal" for="completed">Completed</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row px-3 py-1">
+              <div class="container task-create">
+                <div class="row">
+                  <div class="input-label">Current Stage</div>
+                </div>
+                <div class="row px-1">
+                  <!-- Theres a need to prefix id with 'stage-' because one of the tags id is already called testing -->
+                  <div class="col-auto p-1">
+                    <input type="radio" class="btn-check" name="current-stage" id="stage-planning" autocomplete="off"
+                      disabled>
+                    <label class="btn btn-custom-normal" for="stage-planning">Planning</label>
+                  </div>
+                  <div class="col-auto p-1">
+                    <input type="radio" class="btn-check" name="current-stage" id="stage-development" autocomplete="off"
+                      disabled>
+                    <label class="btn btn-custom-normal" for="stage-development">Development</label>
+                  </div>
+                  <div class="col-auto p-1">
+                    <input type="radio" class="btn-check" name="current-stage" id="stage-testing" autocomplete="off"
+                      disabled>
+                    <label class="btn btn-custom-normal" for="stage-testing">Testing</label>
+                  </div>
+                  <div class="col-auto p-1">
+                    <input type="radio" class="btn-check" name="current-stage" id="stage-integration" autocomplete="off"
+                      disabled>
+                    <label class="btn btn-custom-normal" for="stage-integration">Integration</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row px-3 py-1">
+              <div class="container task-create">
+                <div class="row">
+                  <div class="input-label">Task Description</div>
+                </div>
+                <div class="row px-2">
+                  <textarea class="form-control" id="task-description-input" style="font-size: 25px;"
+                    placeholder="Describe the task" rows="3" onchange="CheckDescription()" disabled></textarea>
+                  <div class="invalid" id="invalid-description" style="display: none;">! Please include a description
+                    for the task.</div>
+                </div>
+              </div>
+            </div>
+            <div class="row px-3 py-1">
+              <div class="container task-create">
+                <div class="row">
+                  <div class="input-label">Assign to</div>
+                </div>
+                <!-- Room for improvements, dont use multiple input modes, instead just use select -->
+                <!-- Input for normal mode, shown by default -->
+                <div class="input-group-lg input-normal-mode">
+                  <input type="text" class="form-control" id="assign-member-input" value="Username" disabled />
+                </div>
+                <!-- Select for edit mode, hidden by default -->
+                <div class="input-group-lg" style="display: none;">
+                  <select class="form-select" id="assign-member" disabled>
+                    <option selected value="">Username</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row px-3 py-1">
+                <div class="container task-create">
+                  <div class="row">
+                    <div class="input-label">Hours Logged</div>
+                  </div>
+                  <div class="row px-2">
+                    <div class="col-auto">
+                      <p class="form-control" id="logged-hours-input" >Hours</p>
+                    </div>
+                    <div class="col-auto">
+                      <p class="form-control" id="logged-minutes-input">Minutes</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row create-button-row">
+              <div class="col">
+                <button type="submit" id="save-task-button" class="btn btn-create-button"
+                  style="visibility: hidden;">Save</button>
+                <button type="button" id="edit-task-button" class="btn btn-create-button">Edit Task</button>
+                <button type="button" id="aoe-graph-button" class="btn btn-create-button">Accumulation of Effort
+                  Graph</button>
+              </div>
+            </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Revoke Confirmation Modal -->
+<div class="modal fade" id="revoke-confirmation-modal" style="top: 50px; position: absolute;" tabindex="-1"
+  aria-labelledby="revoke-confirmation-label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="revoke-confirmation-label">Revoke Confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h6>Are you sure you want to revoke this task? </h6>
+        <p>All recorded data for this task will be permanently erased. This action is irreversible.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirm-revoke">Revoke</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include 'dynamicModal.html' %}
+
+<script src="{{ url_for('static', filename='/form_warnings.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='/edit_task.js') }}" defer></script>
+<script src="{{ url_for('static', filename='/edit_mode.js') }}"></script>
+
+<script type="module" src="{{ url_for('static', filename='revoke.js') }}"></script>
+<script src="{{ url_for('static', filename='accumulation_of_effort.js') }}" defer></script>
+
+<script type="module">
+  import { setupRevokeButtonListeners } from "{{ url_for('static', filename='revoke.js') }}";
+  import { populateTaskFields, setUpEditForm } from "{{ url_for('static', filename='/edit_task.js') }}";
+  import { createChart } from "{{ url_for('static', filename='accumulation_of_effort.js') }}";
+
+  var task = {{ fetchedTask | tojson }};
+  populateTaskFields(task);
+
+  setupRevokeButtonListeners(task);
+
+  // Add event listener to the edit button
+  editButton.addEventListener('click', function () {
+    enableEditMode();
+    setUpEditForm(task.taskID, task.assigneeName);
+  });
+
+
+  function aoeSprintDetails(task_id) {
+
+    var startDate;
+    var endDate;
+    var hours_logged = [];
+
+    var fetchSprint = new Promise(function (resolve, reject) {
+      $.ajax({
+        url: "/AOE_graph/sprint_details/" + task_id,
+        method: "GET",
+        success: function (data) {
+          // console.log("sprint details:", data);
+          startDate = data.startTime;
+          endDate = data.endTime;
+          resolve()
+        },
+        error: function (error) {
+          console.error("Error fetching tasks:", error);
+          reject(error)
+        }
+      });
+    });
+
+    var fetchHoursLogged = new Promise(function (resolve, reject) {
+      $.ajax({
+        url: "/AOE_graph/hours_logged/" + task_id,
+        method: "GET",
+        success: function (data) {
+          // console.log("Logged hours:", data);
+          hours_logged = data;
+          displayLoghours(data)
+          resolve()
+        },
+        error: function (error) {
+          console.error("Error fetching logged hours:", error);
+          reject(error)
+        }
+      });
+    });
+
+    Promise.all([fetchSprint, fetchHoursLogged])
+      .then(function () {
+        // console.log(startDate);
+        // console.log(endDate);
+        createChart(startDate, endDate, hours_logged);
+      })
+      .catch(function (error) {
+        console.error("Error:", error);
+      });
+  }
+
+  aoeSprintDetails(task.taskID)
+</script>
+<script>
+  // use to show graph when accumulation of effort button is pressed
+  var aoeButton = document.getElementById("aoe-graph-button")
+  aoeButton.addEventListener("click", () => {
+
+    var mainBody = document.getElementById("task-form")
+    var aoeBody = document.getElementById("aoe-graph-body")
+    var title = document.getElementById("view-task")
+    var revokeButton = document.getElementById("revoke-button")
+
+    // change header
+    title.textContent = "Accumulation Of Effort"
+
+    //hide revoke button
+    revokeButton.disabled = true;
+
+    // change main content display to none
+    mainBody.style.display = "none";
+
+    // show the aoe graph
+    aoeBody.style.display = "block";
+    // create the chart to display
+    // createChart()
+
+  })
+
+  // show back the task view when back button is pressed
+  var aoeButton = document.getElementById("back-button")
+  aoeButton.addEventListener("click", () => {
+
+    var mainBody = document.getElementById("task-form")
+    var aoeBody = document.getElementById("aoe-graph-body")
+    var title = document.getElementById("view-task")
+    var revokeButton = document.getElementById("revoke-button")
+
+    // change header
+    title.textContent = "View Task"
+
+    // show revoke button
+    revokeButton.disabled = false;
+
+    // show back main content
+    mainBody.style.display = "block";
+
+    // hide the aoe graph
+    aoeBody.style.display = "none";
+
+  })
+
+  function displayLoghours(data) {
+    // console.log("displayLoghours", data)
+    var totalMinutes = 0;
+
+    for (let i = 0; i < data.length; i++) {
+      if (data[i]["LogHours"]) {
+        var timeParts = data[i]["LogHours"].split('.');
+        // console.log(timeParts)
+        if (timeParts.length === 2) {
+          var hours = parseInt(timeParts[0]);
+          var minutes = parseInt(timeParts[1]);
+
+          totalMinutes += hours * 60 + minutes;
+        }
+      }
+    }
+    var hours = Math.floor(totalMinutes / 60);
+    var minutes = totalMinutes % 60;
+
+    // console.log("Total hours: " + hours);
+    // console.log("Total minutes: " + minutes);
+
+    var hoursP = document.getElementById("logged-hours-input");
+    hoursP.textContent = hours + " HOURS";
+
+    var minutesP = document.getElementById("logged-minutes-input");
+    minutesP.textContent = minutes + " MINUTES";
+
+  }
+</script>

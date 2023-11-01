@@ -1,0 +1,379 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 3px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #F99417; /* Color of the thumb (the draggable part) */
+  border-radius: 10px; /* Round the edges of the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #0056b3; /* Color when hovered */
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent; /* Color of the track (the non-draggable part) */
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 250px;
+    background-color: #F99417;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.dark-mode .sidebar  {
+    background-color: #010066 !important;
+}
+
+.dark-mode .content-title  {
+    color: #010066 !important;
+}
+
+.dark-mode .sidebar-title, .dark-mode .sidebar-text {
+    color: #ffcc00;
+}
+
+.dark-mode .create-sprint-btn, .dark-mode .sprint-card .buttons button {
+    background-color: #cc0001 !important;
+    color: white !important;
+}
+
+.dark-mode .create-sprint-btn:hover, .dark-mode .sprint-card .buttons button:hover {
+    background-color:  #a40000 !important;
+}
+
+.dark-mode h3 {
+    color: #010066 !important;
+}
+
+.theme-image, .greeting-section {
+    display: none;
+}
+
+.dark-mode .theme-image {
+    display: block;
+}
+
+.dark-mode .greeting-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 20px; /* or any other suitable value */
+}
+
+.greeting-section h1 {
+    color: rgb(204, 0, 0);
+    margin: 0 20px; /* Adjust the space between the text and images */
+}
+
+.theme-greeting-image{
+    height: auto;
+    width: 100px; /* Adjust the size of the images */
+}
+
+
+.sidebar-title {
+    text-align: center;
+    margin-top: 22px;
+    margin-bottom: 50px;
+    font-size: 33px;
+    font-family:'Courier New', Courier, monospace;
+    font-weight:900 ;
+}
+
+.top-menu {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.bottom-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+/* side menu text (product backlog etc)*/
+nav a {
+    font-size: 20px;
+    display: block;
+    text-align: left;
+    padding-left: 10px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: rgba(245, 245, 245, 0.827);
+}
+
+nav a:hover {
+    color: white !important;
+}
+
+/* main section */
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+/* Product Backlog */
+.content-title {
+    color: #F99417;
+    margin: 0;
+    margin-top: 20px;
+    font-size: 35px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.header-buttons {
+    display: flex;
+    align-items: center;
+    margin-right: 50px;
+}
+
+/* create task btn */
+.create-sprint-btn {
+    background-color: #F99417 !important;
+    color: white !important;
+    border: none !important;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+}
+
+.create-sprint-btn:hover {
+    background-color: #E88315 !important;
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 1px solid #F99417;
+}
+
+.sprints-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* To give space between tasks */
+}
+
+.sprints-list .sprint-card {
+    position:absolute;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content:left;
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0  4px 8px rgba(0, 0, 0, 0.15);
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.sprint-card {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+}
+
+.sprint-card > p, .sprint-card > .tags {
+    display: inline-block;
+    margin-right: 10px; /* space between elements */
+    
+}
+
+.sprintCard {
+    border: 1px solid #000;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: black;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.sprint-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* sprint card */
+/* name of sprint card */
+.sprint-card h3 {
+    flex-basis: 100%;
+    margin-bottom: 10px;
+    font-size: 30px;
+    order: 1;  /* Ensures the title is the first item on the left */
+}
+
+/* Status of the sprint card (below the title) */
+.sprint-card .sprint-status {
+    border: 1px solid black;
+    border-radius: 10px;
+    width: 120px;
+    padding: 1.8px;
+    text-align: center;
+    order: 2; /* Ensures the status is the second item on the left */
+}
+
+/* Time box (start and end date) */
+.sprint-card .time-box {
+    position: absolute;
+    right: 15px;
+    order: 3; /* Ensures the time box is the third item, to the right of the title */
+    align-self: flex-start; /* Aligns to the top */
+}
+
+/* Styling for the individual dates within the time-box */
+.sprint-card .time-box .time {
+    border: 1px solid black;  /* Black border */
+    border-radius: 10px;
+    padding: 5px 10px;  /* Some padding so the date doesn't touch the border */
+    margin: 0 2px;  /* Some margin to separate multiple bordered items */
+}
+
+/* Buttons at the bottom right */
+.sprint-card .buttons {
+    position: absolute;
+    right: 15px;
+    order: 4; /* Ensures the buttons are the fourth item, at the bottom right */
+    align-self: flex-end; /* Aligns to the bottom */
+    display: flex;
+    gap: 10px; /* Space between buttons */
+}
+
+.sprint-card .buttons button {
+    background-color: #F99417 !important;
+    color: white !important;
+    border: none !important;
+    padding: 3px 15px;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+.sprint-card .buttons button:hover {
+    background-color: #E88315 !important;
+}
+
+
+/* filter button */
+.filter-button {
+    height: 34px;
+    background-color: white; 
+    color: black; 
+    border: 1px solid black; 
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s; 
+    display: block;
+    width: 100%; 
+    margin-left: 5px;
+}
+
+/* sorting button*/
+.sorting-button {
+    background-color: white; 
+    color: black; 
+    border: 1px solid black; 
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s; /* transition effect for background-color */
+    display: block;
+    width: 100%;
+    margin-right: 5px;
+}
+
+/* icon of filter& sorting button */
+.filter-button i, .sorting-button i {
+    font-size: 20px; 
+}
+
+/* Change button color to orange on hover */
+.filter-button:hover, .sorting-button:hover {
+    background-color: #f99417; 
+    color: white; 
+}
+
+/* Dropdown container */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown content */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border: 1px solid black; /* Black border for consistency */
+    border-radius: 5px;
+}
+
+/* Dropdown container for filter buttons */
+.filter-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown options */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s; /* transition effect for background-color */
+}
+
+.dropdown-content a:hover {
+    background-color: #f99417; /* Orange color on hover */
+    color: white; /* White font color on hover */
+}
+
+/* Show dropdown when the button is clicked */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Style tag buttons in the filter dropdown */
+.tag-button {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin: 5px 0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%; /* Full width of the container */
+    display: block; /* Displays tag buttons as block elements */
+}
+
+
+.tag-button:hover {
+    background-color: #f99417;
+    color: white;
+}

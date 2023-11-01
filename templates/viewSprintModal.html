@@ -1,0 +1,168 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='view_sprint.css') }}"> -->
+<link rel="stylesheet" href="{{ url_for('static', filename='sprint_modal.css') }}">
+
+
+<!-- View Sprint Modal -->
+<!-- <div class="modal fade" id="view-sprint-modal" tabindex="-1" aria-labelledby="viewSprintModalLabel" aria-hidden="true"> -->
+<div class="modal fade sprint-modal" id="view-sprint-modal" tabindex="-1" aria-labelledby="viewSprintModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewSprintModalLabel">View Sprint</h5>
+        <div>
+          <button type="button" class="btn-delete-close" id="delete-button" aria-label="Delete">
+            <i class="bi bi-trash" style="font-size: 22px;"></i>
+          </button>
+          <button type="button" class="btn-delete-close" data-bs-dismiss="modal" aria-label="Close">
+            <i class="bi bi-x-lg" style="font-size: 22px;"></i>
+          </button>
+        </div>
+        <!--<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+      </div>
+      <div class="modal-body">
+        <div class="info-box">
+          <h6>Sprint Name</h6>
+          <p id="sprintName"></p>
+        </div>
+
+        <div class="info-box">
+          <div class="row">
+            <h6>Sprint Status</h6>
+              <p><i>Note: The sprint status is automatically determined by the sprint's start and end dates</i></p>
+          </div>
+          <div class="row">
+            <div class="col-auto px-2">
+              <input type="radio" class="btn-check" name="sprint-status" id="not-started" autocomplete="off" disabled>
+              <label class="btn btn-custom-normal" for="not-started">Not Started</label>
+            </div>
+            <div class="col-auto px-2">
+              <input type="radio" class="btn-check" name="sprint-status" id="active" autocomplete="off" disabled>
+              <label class="btn btn-custom-normal" for="active">Active</label>
+            </div>
+            <div class="col-auto px-2">
+              <input type="radio" class="btn-check" name="sprint-status" id="completed" autocomplete="off" disabled>
+              <label class="btn btn-custom-normal" for="completed">Completed</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <h6>Time Range</h6>
+          Start: <span class="sprint-details-time-box">
+            <span id="startDateDisplay"></span>
+            <input type="date" id="startDateInput" style="display: none;">
+          </span>
+          End: <span class="sprint-details-time-box">
+            <span id="endDateDisplay"></span>
+            <input type="date" id="endDateInput" style="display: none;">
+          </span>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" id="save-sprint-button" class="btn btn-create-button"
+            style="visibility: hidden;">Save</button>
+          <button type="button" id="edit-sprint-button" class="btn btn-create-button">Edit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% include 'dynamicModal.html' %}
+
+  <!-- <script type="module" src="{{ url_for('static', filename='/scrumboard/edit_sprint.js') }}" defer></script> -->
+  <script type="module" src="{{ url_for('static', filename='/edit_sprint.js') }}" defer></script>
+  <script type="module">
+    //import { setupDeleteButtonListeners } from "{{ url_for('static', filename='delete_sprint.js') }}";
+    // import { toggleEditMode, populateSprintDetails, saveSprintDetails } from "{{ url_for('static', filename='/scrumboard/edit_sprint.js') }}";
+    import { toggleEditMode, populateSprintDetails, saveSprintDetails } from "{{ url_for('static', filename='/edit_sprint.js') }}";
+    import { showDynamicModal } from "{{ url_for('static', filename='/dynamicModal.js') }}";
+
+    var sprint = {{ fetchedSprint | tojson }};
+
+    document.addEventListener("DOMContentLoaded", function () {
+      // Once the document is fully loaded
+
+      // Add onchange listener to startDateInput
+      const startDateInput = document.getElementById('startDateInput');
+      startDateInput.addEventListener('change', validateSprintForm);
+
+      // Add onchange listener to endDateInput
+      const endDateInput = document.getElementById('endDateInput');
+      endDateInput.addEventListener('change', validateSprintForm);
+    });
+
+    populateSprintDetails(sprint);
+    // Attach event listener to the Edit button
+    document.getElementById("edit-sprint-button").addEventListener("click", function () {
+      toggleEditMode(sprint);
+    });
+
+    document.getElementById("save-sprint-button").addEventListener("click", function () {
+      saveSprintDetails(sprint.sprintID);
+    });
+
+    // // Event listener for the delete button
+    // document.getElementById("delete-button").addEventListener("click", function () {
+    //   // Confirm with the user
+    //   const isConfirmed = window.confirm("Are you sure you want to delete this sprint?");
+
+    //   if (isConfirmed) {
+    //     deleteSprint();
+    //   }
+    // });
+
+    // Use the dynamic modal instead of the built-in confirm method
+    document.getElementById("delete-button").addEventListener("click", function () {
+      showDynamicModal(
+        "Confirmation",
+        "Are you sure you want to delete this sprint?",
+        deleteSprint, // This will be called if user confirms
+        null  // This can be a function or null if you have no specific action on cancel
+      );
+    });
+
+    function reloadPage() {
+    location.reload();
+}
+
+
+    function deleteSprint() {
+      // Assuming you identify a sprint by its name
+      const sprintName = document.getElementById("sprintName").textContent;
+
+      // Send a DELETE request to the server
+      fetch(`/delete_sprint/${sprint.sprintID}`, {
+        method: 'DELETE',
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // Handle success - close the modal and refresh or update the UI
+            $("#view-sprint-modal").modal("hide");
+            // console.log("delete sprint if:");
+            // showDynamicModal('Alert Message', `Sprint ${sprint.sprintID} has been succesfully deleted`);
+            showDynamicModal("Alert",`Sprint ${sprint.sprintID} has been succesfully deleted`,reloadPage,reloadPage);
+            // alert(`Sprint ${sprint.sprintID} has been succesfully deleted`);
+            // (); // or update the UI in some other way
+          } else {
+            // Handle error - show the specific error message returned from the backend
+            // showDynamicModal('Alert Message', data.message);
+            // console.log("delete sprint else:");
+            showDynamicModal("Alert",data.message,reloadPage,reloadPage);
+            // alert(data.message);
+            $("#view-sprint-modal").modal("hide");
+            // location.reload();
+          }
+        })
+        .catch(error => {
+          console.error("Error deleting sprint:", error);
+          showDynamicModal("Alert","An error occurred. Please try again.",null,null);
+          // alert("An error occurred. Please try again.");
+        });
+    }
+
+  </script>

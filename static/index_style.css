@@ -1,0 +1,407 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 3px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #F99417; /* Color of the thumb (the draggable part) */
+  border-radius: 10px; /* Round the edges of the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #0056b3; /* Color when hovered */
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent; /* Color of the track (the non-draggable part) */
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 250px;
+    background-color: #F99417;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.sidebar-title {
+    text-align: center;
+    margin-top: 22px;
+    margin-bottom: 50px;
+    font-size: 33px;
+    font-family:'Courier New', Courier, monospace;
+    font-weight:900 ;
+}
+
+.top-menu {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.bottom-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+/* side menu text (product backlog etc)*/
+nav a {
+    font-size: 20px;
+    display: block;
+    text-align: left;
+    padding-left: 10px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: rgba(245, 245, 245, 0.827);
+}
+
+nav a:hover {
+    color: white !important;
+}
+
+/* main section */
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+/* Product Backlog */
+.content-title {
+    color: #F99417;
+    margin: 0;
+    margin-top: 20px;
+    font-size: 35px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.header-buttons {
+    display: flex;
+    align-items: center;
+    margin-right: 50px;
+}
+
+
+/* create task btn */
+.create-task-btn {
+    background-color: #F99417 !important;
+    color: white !important;
+    border: none !important;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+}
+
+.dark-mode .create-task-btn {
+    background-color: #cc0001 !important;
+    color: white !important;
+}
+
+.dark-mode .create-task-btn:hover {
+    background-color:  #a40000 !important;
+}
+
+.create-task-btn:hover {
+    background-color: #E88315 !important;
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 1px solid #F99417;
+}
+
+.tasks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* To give space between tasks */
+}
+
+.tasks-list .task-card {
+    position:absolute;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content:left;
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0  4px 8px rgba(0, 0, 0, 0.15);
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.task-card {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+}
+
+.task-card > p, .task-card > .tags {
+    display: inline-block;
+    margin-right: 10px; /* space between elements */
+    
+}
+
+.taskCard {
+    border: 1px solid #000;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: black;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.task-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* task card */
+/* name of task card */
+.task-card h3 {
+    flex-basis: 100%;
+    margin-bottom: 10px;
+    font-size: 30px;
+}
+
+.dark-mode .task-card h3 {
+    color: #010066 !important;
+}
+
+.dark-mode .story-points {
+    color: #010066 !important;  
+}
+/* Style for the priority */
+.task-card p {
+    margin-right: 10px; /* Add some spacing to the right of the priority */
+}
+/* priority tag*/
+.priority-tags-container {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+}
+
+.priority-tags-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.priority-low {
+    width: 90px;
+    border: 2px solid green;
+    border-radius: 20px;
+    padding: 1.8px;
+    color: green;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.priority-medium {
+    width: 90px;
+    border: 2px solid yellow;
+    border-radius: 20px;
+    padding: 1.8px;
+    color: yellow;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.priority-important {
+    width: 90px;
+    border: 2px solid orange;
+    border-radius: 20px;
+    padding: 1.8px;
+    color: orange;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.priority-urgent {
+    width: 90px;
+    border: 2px solid red;
+    border-radius: 20px;
+    padding: 2px;
+    color: red;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.input-label {
+    font-size: 20px;
+    color: #000000;
+    font-family: 'Inter', sans-serif !important;
+}
+
+/* tags */
+.tag {
+    margin-top: 0;
+    align-items:start;
+    border: 1px solid black;
+    padding: 1.5px 10px;
+    margin-left: 10px;
+    border-radius: 20px;
+}
+
+.task-card .popup-btn {
+    margin-left: 15px;
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* story points */
+.story-point-section {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+}
+
+.story-points-label {
+    position:absolute;
+    right: 5px;
+    font-weight: 600;
+    font-size: 17px;
+    margin-right: 75px; /* spacing */
+}
+
+.story-points {
+    position: absolute; 
+    right: 15px;
+    display: inline-block;
+    background-color: white;
+    color: #F99417;
+    font-size: 18px;
+    border-radius: 50%;
+    padding: 10px 19px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-left: 10px;
+}
+
+/* filter button */
+.filter-button {
+    height: 34px;
+    background-color: white; 
+    color: black; 
+    border: 1px solid black; 
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s; 
+    display: block;
+    width: 100%; 
+    margin-left: 5px;
+}
+
+/* sorting button*/
+.sorting-button {
+    background-color: white; 
+    color: black; 
+    border: 1px solid black; 
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s; /* transition effect for background-color */
+    display: block;
+    width: 100%;
+    margin-right: 5px;
+}
+
+/* icon of filter& sorting button */
+.filter-button i, .sorting-button i {
+    font-size: 20px; 
+}
+
+/* Change button color to orange on hover */
+.filter-button:hover, .sorting-button:hover {
+    background-color: #f99417; 
+    color: white; 
+}
+
+/* Dropdown container */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown content */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border: 1px solid black; /* Black border for consistency */
+    border-radius: 5px;
+}
+
+/* Dropdown container for filter buttons */
+.filter-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown options */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s; /* transition effect for background-color */
+}
+
+.dropdown-content a:hover {
+    background-color: #f99417; /* Orange color on hover */
+    color: white; /* White font color on hover */
+}
+
+/* Show dropdown when the button is clicked */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Style tag buttons in the filter dropdown */
+.tag-button {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin: 5px 0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%; /* Full width of the container */
+    display: block; /* Displays tag buttons as block elements */
+}
+
+
+.tag-button:hover {
+    background-color: #f99417;
+    color: white;
+}

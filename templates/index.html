@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <title>Scrum Tool</title>
+    <link rel="stylesheet" href="modal_style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js"></script>
+  </head>
+
+  <body>
+    <div id="modal-container"></div>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h1 class="sidebar-title">Scrum Tool</h1>
+            
+            <nav class="top-menu">
+                <a href="#">Product Backlog</a>
+                <a href="#">Scrum Board</a>
+            </nav>
+
+            <nav class="bottom-menu">
+                <a href="#">Profile</a>
+                <a href="#">Log out</a>
+            </nav>
+        </div>
+        
+        <!-- Main Page Content -->
+        <div class="main-content">
+
+            <div class="header-section">
+                <h2 class="content-title">Product Backlog</h2>
+                <div class="header-buttons">
+                    <button class="btn create-task-btn" id="load-create-task-modal">Create Task</button>
+                    <button class="btn btn-outline sort-btn">sort-button</button></button> <!-- Sorting symbol. Adjust as needed -->
+                    <button class="btn btn-outline filter-btn">filter-button</filter-buttio></button> <!-- Filtering symbol. Adjust as needed -->
+                </div>
+            </div>
+
+            <div class="tasks-list">
+                <!-- Sample Task -->
+                <div class="task-card">
+                    <h3>Task Name</h3>
+                    <div class="tags">
+
+                        <span class="colour-tag" data-color="red">Urgent</span>
+                        <span class="tag">
+                            <span class="tag1">Tag 2</span>
+                            <span class="tag2">Tag 3</span>
+                            <span class="tag3">Tag 4</span>
+                        </span>
+                        <button class="popup-btn">...</button> <!-- Popup button symbol. Adjust as needed -->
+                    </div>
+                    <div class="story-point-section">
+                        <span>Story Points:</span>
+                        <div class="story-points">12</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $("#load-create-task-modal").click(function() {
+                // Load the modal content from external HTML file
+                $("#modal-container").load("createTaskModal.html", function() {
+                    // Show the modal when content is loaded
+                    $("#create-task-modal").modal("show");
+                });
+            });
+            $(".task-card").click(function() {
+                // Load the modal content from external HTML file
+                $("#modal-container").load("viewTaskModal.html", function() {
+                    // Show the modal when content is loaded
+                    $("#view-task-modal").modal("show");
+                });
+            });
+        });
+    </script>
+  </body>
+</html>
+

@@ -1,0 +1,153 @@
+<link rel=" stylesheet" href="{{ url_for('static', filename='manage_team.css') }}">
+
+<!-- <div class="modal fade" id="create-sprint-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="create-sprint" aria-hidden="true"> -->
+<div class="modal fade add-member-modal" id="add-new-member-modal" tabindex="-1" aria-labelledby="addMemberModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl modal-fullscreen-md-down modal-dialog-scrollable">
+    <div class="modal-content modal-content-custom" style="background-color: #f2f3f5;">
+      <div class="modal-header" style="background-color: #FF9417;">
+        <h1 class="modal-title fs-5" id="create-sprint" style="color: #ffffff; font-weight: bold;">Adding New Team
+          Member</h1>
+        <button type="button" class="btn-delete-close" data-bs-dismiss="modal" aria-label="Close">
+          <i class="bi bi-x-lg" style="font-size: 22px;"></i>
+        </button>
+      </div>
+      <div class="modal-body" id="add-member-form">
+        <div class="row px-3 py-1">
+          <div class="container add-member-form">
+            <div class="row">
+              <div class="input-label">Name</div>
+            </div>
+            <div class="row px-2">
+              <input type="text" class="form-control" style="font-size: 22px;" id="member-name-input"
+                placeholder="Team Member's Name">
+              <div class="invalid" id="invalid-member-name" style="display: none;">! Please enter a name.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row px-3 py-1">
+          <div class="container add-member-form">
+            <div class="row">
+              <div class="input-label">Email</div>
+            </div>
+            <div class="row px-2">
+              <input type="text" class="form-control" style="font-size: 22px;" id="member-email-input"
+                placeholder="example@domain.com" >
+              <div class="invalid" id="invalid-member-email" style="display: none;">! Please enter an email.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row px-3 py-1">
+          <div class="container add-member-form">
+            <div class="row">
+              <div class="input-label">Password</div>
+            </div>
+            <div class="row px-2">
+              <input type="text" class="form-control" style="font-size: 22px;" id="member-password-input"
+                placeholder="password">
+              <div class="invalid" id="invalid-member-password" style="display: none;">! Please enter a password.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row create-button-row">
+          <div class="col-12 create-button-col text-end">
+            <button type="submit" id="confirm-add-member" class="btn confirm-add-member-button"
+              onclick="if (validateInput()) { $('#add-new-member-modal').modal('hide'); }">
+              Add Team Member
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById("confirm-add-member").addEventListener("click", createMember);
+
+  function validateInput() {
+    const nameInput = document.getElementById("member-name-input");
+    const emailInput = document.getElementById("member-email-input");
+    const passwordInput = document.getElementById("member-password-input");
+
+    const nameError = document.getElementById("invalid-member-name");
+    const emailError = document.getElementById("invalid-member-email");
+    const passwordError = document.getElementById("invalid-member-password");
+
+    let valid = true;
+
+    if (nameInput.value.trim() === "") {
+      nameError.style.display = "block";
+      valid = false;
+    } else {
+      nameError.style.display = "none";
+    }
+
+    const emailValue = emailInput.value.trim();
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex pattern for a basic email validation
+
+    if (emailValue === "" || !emailPattern.test(emailValue)) {
+        emailError.style.display = "block";
+        valid = false;
+    } else {
+        emailError.style.display = "none";
+    }
+
+    if (passwordInput.value.trim() === "") {
+      passwordError.style.display = "block";
+      valid = false;
+    } else {
+      passwordError.style.display = "none";
+    }
+
+    return valid;
+  }
+
+  function createMember(){
+    const bool = validateInput()
+    if (bool){
+      const memberName = document.getElementById("member-name-input").value;
+      const memberEmail = document.getElementById("member-email-input").value;
+      const memberPassword = document.getElementById("member-password-input").value;
+      const memberRole = "Team Member";
+      // console.log(memberName);
+      // console.log(memberEmail);
+      // console.log(memberPassword);
+      // console.log("Created!!");
+
+      const data = {
+        memberName,
+        memberEmail,
+        memberPassword,
+        memberRole
+      }
+
+      sendCreateRequest(data)
+        .then(result => {
+          alert(result.message);
+          if (result.success){
+            location.reload();
+          }
+        })
+        .catch(() => alert("Failed to create member!,API issue"))
+    }
+    else{
+      // console.log("Connot be created!")
+    }
+  }
+
+  function sendCreateRequest(userData){
+    return fetch('/create_member', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    })
+      .then(response => response.json());
+  }
+</script>

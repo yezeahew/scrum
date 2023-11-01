@@ -1,0 +1,71 @@
+.modal {
+    border-radius: 100px;
+}
+
+.modal-dialog {
+    max-width: 800px !important;
+}
+
+.modal-content {
+    width: 100% !important;
+    height: 500px;
+    overflow-y: auto;
+    border-radius: 15px !important;
+}
+
+.modal-header {
+    background: #F99417;
+    color: white;
+    padding: 8px 10px !important;
+}
+
+.modal-body > * {
+    margin-top: 20px; /* adjust as needed */
+    margin-bottom: 10px; /* adjust as needed */
+}
+
+.modal-body h3 {
+    margin-top: 20px; /* adjust as needed */
+    color: grey;
+}
+
+.modal-body .bin-logo {
+    margin-top: 30px;
+    margin-bottom: 30px; /* adjust as needed */
+    display: flex; /* Center the SVG inside .bin-logo */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-body p {
+    margin-bottom: 15px; /* adjust as needed */
+    color: grey;
+}
+
+.bin-logo svg {
+    width: 150px;
+    height: 150px;
+}
+
+.custom-btn {
+    background-color: #F99417 !important;
+    color: white !important;
+    border: none !important;
+    transition: background-color;
+
+    /* Optional: To change the appearance when hovered */
+    &:hover {
+        background-color: #E88315 !important; /* Slightly darker shade of orange */
+    }
+}
+
+.decline-btn {
+    margin-right: 130px; /* Adjust this value as you see fit */
+}
+
+.btn-close {
+    background-color: white !important;
+    border: 1px solid black !important;  /* Adjust the color and thickness of the border as needed */
+    border-radius: 0.25rem;  /* Rounded corners for the button, adjust as needed */
+    margin-right: 3px !important;
+}

@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Scrum Tool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='toggle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='scrum_board.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='index_style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modal_style.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<div id="modal-container"></div>
+<div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h1 class="sidebar-title">Scrum Tool</h1>
+
+        <nav class="top-menu">
+            <a href="/productBacklog" class="sidebar-text">Product Backlog</a>
+            <a href="/scrumBoard" class="sidebar-text">Scrum Board</a>
+        </nav>
+
+        <nav class="bottom-menu">
+            <a href="/manageTeam" class="sidebar-text" id="manage-team-button" style="display: none;">Manage Team</a>
+            <a href="profile" class="sidebar-text">Profile</a>
+            <div class="theme-switch-wrapper">
+                <label class="theme-switch" for="checkbox">
+                    <input type="checkbox" id="checkbox" />
+                    <div class="slider round">
+                        <img
+                            src="https://flagcdn.com/16x12/my.png"
+                            srcset="https://flagcdn.com/32x24/my.png 2x,
+                            https://flagcdn.com/48x36/my.png 3x"
+                            width="12"
+                            height="10"
+                            alt="Malaysia"
+                            class="flag"
+                        >
+                    </div>
+                </label>
+            </div>
+            <a type="button" class="sidebar-text" id="logout-btn">Log out</a>
+        </nav>
+    </div>
+
+    <!-- Main Page Content -->
+
+    <div class="main-content">
+
+        <div class="header-section">
+            <h2 class="content-title">Burndown Chart</h2>
+        </div>
+
+    <div class="container">
+        <canvas id="myChart" class="img-fluid"></canvas>
+    </div>
+
+    </div>
+</div>
+<script src="{{ url_for('static', filename='/logout.js') }}"></script>
+<script type="module">
+    import { createChart } from "{{ url_for('static', filename='display_burndown_chart.js') }}";
+
+    var sprint_id = {{ sprintID | tojson }};
+    console.log("sprint id: " + sprint_id)
+
+    var taskData = []
+
+    function getSprintDetails() {
+        var startDate;
+        var endDate;
+        var tasks;
+        var completionDate;
+
+        // Wrap each AJAX call in a promise
+        var fetchStartDate = new Promise(function(resolve, reject) {
+            $.ajax({
+                url: "/burndown_chart/sprint_details/" + sprint_id,
+                // url: "/burndown_chart/sprint_details/" + "4",
+                method: "GET",
+                success: function(data) {
+                    console.log("Fetched sprint:", data);
+                    startDate = data.startTime;
+                    endDate = data.endTime;
+                    resolve(); // Resolve the promise when the AJAX call is successful
+                },
+                error: function(error) {
+                    console.error("Error fetching sprint:", error);
+                    reject(error); // Reject the promise on error
+                }
+            });
+        });
+
+        var fetchTaskDetails = new Promise(function(resolve, reject) {
+            $.ajax({
+                url: "/burndown_chart/sprint_task_details/" + sprint_id,
+                // url: "/burndown_chart/sprint_task_details/" + "4",
+                method: "GET",
+                success: function(data) {
+                    console.log("Fetched tasks:", data);
+                    tasks = data
+                    resolve(); // Resolve the promise when the AJAX call is successful
+                },
+                error: function(error) {
+                    console.error("Error fetching tasks:", error);
+                    alert("There are no tasks assigned to current sprint!")
+                    reject(error); // Reject the promise on error
+                }
+            });
+        });
+
+        var fetchCompletionDate = new Promise(function(resolve, reject) {
+            $.ajax({
+                url: "/CompletedDate/" + sprint_id,
+                // url: "/burndown_chart/sprint_task_details/" + "4",
+                method: "GET",
+                success: function(data) {
+                    console.log("Fetched Completion Data:", data);
+                    completionDate = data
+                    resolve(); // Resolve the promise when the AJAX call is successful
+                },
+                error: function(error) {
+                    console.error("Error fetching data:", error);
+                    reject(error); // Reject the promise on error
+                }
+            });
+        });
+
+        // Use Promise.all to wait for both promises to resolve
+        Promise.all([fetchStartDate, fetchTaskDetails, fetchCompletionDate])
+            .then(function() {
+                createChart(startDate, endDate, tasks, completionDate);
+            })
+            .catch(function(error) {
+                console.error("Error:", error);
+            });
+    }
+
+    getSprintDetails()
+    
+</script>
+<script src="{{ url_for('static', filename='toggle.js') }}"></script>
+<script src="{{ url_for('static', filename='display_burndown_chart.js') }}"></script>
+<script src="{{ url_for('static', filename='/manage_team_button.js') }}"></script>
+</body>
+</html>

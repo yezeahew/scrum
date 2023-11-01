@@ -1,0 +1,27 @@
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+<!-- Logout Confirmation Modal -->
+<div class="modal fade" id="logoutConfirmationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="font-family: 'Inter', sans-serif;">
+            <!-- Modal header (with title) -->
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Log Out</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <p>Are you sure you want to log out?</p>
+            </div>
+            <!-- Modal footer with buttons -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color: grey;">Cancel</button>
+                <button type="button" class="btn btn-logout" id="confirm-logout-btn" style = "background-color:#ff0000; color: white; font-family: 'Inter', sans-serif;" >Log Out</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='/logout.js') }}"></script>

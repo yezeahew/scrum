@@ -1,0 +1,246 @@
+<div class="modal fade" id="create-task-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="create-task" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-fullscreen-md-down modal-dialog-scrollable">
+      <div class="modal-content" style="background-color: #f2f3f5;">
+        <div class="modal-header" style="background-color: #FF9417;">
+            <h1 class="modal-title fs-5" id="create-task" style="color: #ffffff;">Create New Task</h1>
+            <button type="button" class="btn-delete-close" data-bs-dismiss="modal" aria-label="Close">
+                <i class="bi bi-x-lg" style="font-size: 22px;"></i>
+            </button>
+        </div>
+        <form class="modal-body" id="task-form">
+          <div class="row">
+            <div class="col-12 col-xl-6">
+              <div class="row px-3 py-1">
+                <div class="container task-create">
+                  <div class="row">
+                    <div class="input-label">Task Name</div>
+                  </div>
+                  <div class="row px-2">
+                    <input type="text" class="form-control" style="font-size: 30px;" id="task-name-input" placeholder="Name" onchange="CheckName()">
+                    <div class="invalid" id="invalid-task-name" style="display: none;">! Please enter a task name.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row px-3 py-1">
+                <div class="container task-create">
+                  <div class="row">
+                    <div class="input-label">Task Type</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-auto px-2">
+                      <input type="radio" class="btn-check" name="task-type-option" id="story" autocomplete="off" checked>
+                      <label class="btn btn-custom-normal" for="story">Story</label>
+                    </div>
+                    <div class="col-auto px-2">
+                      <input type="radio" class="btn-check" name="task-type-option" id="bug" autocomplete="off">
+                      <label class="btn btn-custom-normal" for="bug">Bug</label>  
+                    </div>
+                </div>
+                  
+                </div>
+              </div>
+              <div class="row px-3 py-1">
+                <div class="container task-create">
+                  <div class="row">
+                    <div class="input-label">Numerical Storypoints</div>
+                    <div class="row px-3">
+                      <div class="col-auto p-1">
+                        <input type="radio" class="btn-check" name="numerical-storypoints" id="1" value="1" autocomplete="off" checked>
+                        <label class="btn btn-custom-points" for="1">1</label>
+                      </div>
+                      <div class="col-auto p-1">
+                        <input type="radio" class="btn-check" name="numerical-storypoints" id="2" value="2" autocomplete="off" >
+                        <label class="btn btn-custom-points" for="2">2</label>
+                      </div>
+                      <div class="col-auto p-1">
+                        <input type="radio" class="btn-check" name="numerical-storypoints" id="3" value="3" autocomplete="off" >
+                        <label class="btn btn-custom-points" for="3">3</label>
+                      </div>
+                      <div class="col-auto p-1">
+                        <input type="radio" class="btn-check" name="numerical-storypoints" id="4" value="4" autocomplete="off" >
+                        <label class="btn btn-custom-points" for="4">4</label>
+                      </div>
+                      <div class="col-auto p-1">
+                        <input type="radio" class="btn-check" name="numerical-storypoints" id="5" value="5" autocomplete="off" >
+                        <label class="btn btn-custom-points" for="5">5</label>
+                      </div>
+                      <div class="col-auto p-1">
+                        <input type="radio" class="btn-check" name="numerical-storypoints" id="6" value="6" autocomplete="off" >
+                        <label class="btn btn-custom-points" for="6">6</label>
+                      </div>
+                      <div class="col-auto p-1">
+                        <input type="radio" class="btn-check" name="numerical-storypoints" id="7" value="7" autocomplete="off" >
+                        <label class="btn btn-custom-points" for="7">7</label>
+                      </div>
+                      <div class="col-auto p-1">
+                        <input type="radio" class="btn-check" name="numerical-storypoints" id="8" value="8" autocomplete="off" >
+                        <label class="btn btn-custom-points" for="8">8</label>
+                      </div>
+                      <div class="col-auto p-1">
+                        <input type="radio" class="btn-check" name="numerical-storypoints" id="9" value="9" autocomplete="off" >
+                        <label class="btn btn-custom-points" for="9">9</label>
+                      </div>
+                      <div class="col-auto p-1">
+                        <input type="radio" class="btn-check" name="numerical-storypoints" id="10" value="10" autocomplete="off" >
+                        <label class="btn btn-custom-points" for="10">10</label>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row px-3 py-1">
+                <div class="container task-create">
+                  <div class="row">
+                    <div class="input-label">Tags</div>
+                  </div>
+                  <div class="row px-1">
+                    <div class="col-auto p-1">
+                      <input type="checkbox" class="btn-check" name="tags" id="front-end" value="FrontEnd" autocomplete="off" onchange="CheckTags()" checked>
+                      <label class="btn btn-custom-normal" for="front-end">Front End</label>
+                    </div>
+                    <div class="col-auto p-1">
+                      <input type="checkbox" class="btn-check" name="tags" id="back-end" value="BackEnd" autocomplete="off" onchange="CheckTags()">
+                      <label class="btn btn-custom-normal" for="back-end">Back End</label>  
+                    </div>
+                    <div class="col-auto p-1">
+                      <input type="checkbox" class="btn-check" name="tags" id="testing" value="TagTesting" autocomplete="off" onchange="CheckTags()" >
+                      <label class="btn btn-custom-normal" for="testing">Testing</label>  
+                    </div>
+                    <div class="col-auto p-1">
+                      <input type="checkbox" class="btn-check" name="tags" id="database" value="Database" autocomplete="off" onchange="CheckTags()" >
+                      <label class="btn btn-custom-normal" for="database">Database</label>  
+                    </div>
+                    <div class="col-auto p-1">
+                      <input type="checkbox" class="btn-check" name="tags" id="ui" value="UI" autocomplete="off" onchange="CheckTags()" >
+                      <label class="btn btn-custom-normal" for="ui">UI</label>
+                    </div>
+                    <div class="col-auto p-1">
+                      <input type="checkbox" class="btn-check" name="tags" id="ux" value="UX" autocomplete="off" onchange="CheckTags()" >
+                      <label class="btn btn-custom-normal" for="ux">UX</label>  
+                    </div>
+                    <div class="col-auto p-1">
+                      <input type="checkbox" class="btn-check" name="tags" id="api" value="API" autocomplete="off" onchange="CheckTags()" >
+                      <label class="btn btn-custom-normal" for="api">API</label>  
+                    </div>
+                    <div class="col-auto p-1">
+                      <input type="checkbox" class="btn-check" name="tags" id="framework" value="Framework" autocomplete="off" onchange="CheckTags()" >
+                      <label class="btn btn-custom-normal" for="framework">Framework</label>  
+                    </div>
+                    <div class="invalid" id="invalid-tags" style="display: none;">! Please select at least one tag.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row px-3 py-1">
+                <div class="container task-create">
+                  <div class="row">
+                    <div class="input-label">Task Priority</div>
+                  </div>
+                  <div class="row px-1">
+                    <div class="col-auto p-1">
+                      <input type="radio" class="btn-check" name="priority-option" id="low" value="Low" autocomplete="off" checked>
+                      <label class="btn btn-custom-low" for="low">Low</label>
+                    </div>
+                    <div class="col-auto p-1">
+                      <input type="radio" class="btn-check" name="priority-option" id="medium" value="Medium" autocomplete="off" >
+                      <label class="btn btn-custom-medium" for="medium">Medium</label>  
+                    </div>
+                    <div class="col-auto p-1">
+                      <input type="radio" class="btn-check" name="priority-option" id="important" value="Important" autocomplete="off" >
+                      <label class="btn btn-custom-important" for="important">Important</label>  
+                    </div>
+                    <div class="col-auto p-1">
+                      <input type="radio" class="btn-check" name="priority-option" id="urgent" value="Urgent" autocomplete="off" >
+                      <label class="btn btn-custom-urgent" for="urgent">Urgent</label>  
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-xl-6">
+              <div class="row px-3 py-1">
+                <div class="container task-create">
+                  <div class="row">
+                    <div class="input-label">Task Status</div>
+                  </div>
+                  <div class="row px-1">
+                    <div class="col-auto p-1">
+                      <input type="radio" class="btn-check" name="task-status" id="not-started" autocomplete="off" checked>
+                      <label class="btn btn-custom-normal" for="not-started">Not Started</label>
+                    </div>
+                    <div class="col-auto p-1">
+                      <input type="radio" class="btn-check" name="task-status" id="in-progress" autocomplete="off" disabled>
+                      <label class="btn btn-custom-normal" for="in-progress">In Progress</label>  
+                    </div>
+                    <div class="col-auto p-1">
+                      <input type="radio" class="btn-check" name="task-status" id="completed" autocomplete="off" disabled>
+                      <label class="btn btn-custom-normal" for="completed">Completed</label>  
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row px-3 py-1">
+                <div class="container task-create">
+                  <div class="row">
+                    <div class="input-label">Current Stage</div>
+                  </div>
+                  <div class="row px-1">
+                    <div class="col-auto p-1">
+                      <input type="radio" class="btn-check" name="current-stage" id="planning" autocomplete="off" checked>
+                      <label class="btn btn-custom-normal" for="planning">Planning</label>
+                    </div>
+                    <div class="col-auto p-1">
+                      <input type="radio" class="btn-check" name="current-stage" id="development" autocomplete="off">
+                      <label class="btn btn-custom-normal" for="development">Development</label>  
+                    </div>
+                    <div class="col-auto p-1">
+                      <input type="radio" class="btn-check" name="current-stage" id="stage-testing" autocomplete="off">
+                      <label class="btn btn-custom-normal" for="stage-testing">Testing</label>  
+                    </div>
+                    <div class="col-auto p-1">
+                      <input type="radio" class="btn-check" name="current-stage" id="integration" autocomplete="off">
+                      <label class="btn btn-custom-normal" for="integration">Integration</label>  
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row px-3 py-1">
+                <div class="container task-create">
+                  <div class="row">
+                    <div class="input-label">Task Description</div>
+                  </div>
+                  <div class="row px-2">
+                    <textarea class="form-control" id="task-description-input" style="font-size: 25px;" placeholder="Describe the task" rows="3" onchange="CheckDescription()"></textarea>
+                    <div class="invalid" id="invalid-description" style="display: none;">! Please include a description for the task.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row px-3 py-1">
+                <div class="container task-create">
+                  <div class="row">
+                    <div class="input-label">Assign to</div>
+                  </div>
+                  <div class="input-group-lg">
+                    <select class="form-select" id="assign-member">
+                      <option selected disabled value="">Username</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row create-button-row">
+            <div class="col-12 create-button-col">
+              <button type="submit" id="create-task-button" class="btn btn-create-button">Create Task</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+<!-- 
+<script src="{{ url_for('static', filename='/productBacklog/form_warnings.js') }}"></script>
+<script src="{{ url_for('static', filename='/productBacklog/create_task.js') }}" type="module"></script> -->
+
+<script src="{{ url_for('static', filename='/form_warnings.js') }}"></script>
+<script src="{{ url_for('static', filename='/create_task.js') }}" type="module"></script>

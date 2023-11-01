@@ -1,0 +1,83 @@
+body {
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+
+.orange-top-bar {
+    background-color: #F99417;
+    color: #fff;
+    padding: 10px 20px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.title { /* "Scrum Tool" */
+    font-size: 45px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.user-icon {
+    text-align: center;
+}
+
+.user-icon i {
+    font-size: 150px;
+    color: #000;
+    border: 1px solid #000;
+    border-radius: 70%;
+    padding: 55px;
+    display: block;
+    margin: 0 auto;
+    width: 250px;
+    height: 250px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* for username and password buttons: */
+.button-container { 
+    text-align: center;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* for username and password input: */
+.custom-text-input { 
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    color: #000000;
+    padding: 12px 130px;
+    box-shadow: 0px 0px 15px rgba(0, 0.0, 0, 0.3);
+    margin-bottom: 10px; /* space between the input */
+    border: none;
+    background-color: #f6f2f2;
+    cursor: pointer;
+    border-radius: 20px;
+    text-align: left;
+    padding-left: 20px;
+}
+
+.login-button {
+    font-family: 'Inter', sans-serif;
+    font-size: 30px;
+    color: #fff;
+    padding: 10px 80px;
+    border-width: 0px;
+    border-color: #F99417;
+    background-color: #F99417;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s; 
+    font-weight: bold;
+}
+
+.login-button:hover {
+    background-color: #ffffff;
+    color: #F99417;
+    border-width: 3px;
+    border-color: #F99417;
+
+}

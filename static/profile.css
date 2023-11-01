@@ -1,0 +1,54 @@
+.container.mt-5 {
+    position: relative ;
+}
+
+.card {
+    background-color: #D9D9D9 !important;
+    border: none !important;
+    box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.25);
+    max-width: 70%;
+    height: 70px !important;
+}
+
+.card-title {
+    font-weight: normal;
+    font-size: 15px;
+}
+
+.card-body {
+    padding: 10px !important;
+}
+
+.card-text {
+    font-weight:500;
+    font-size: 20px;
+}
+
+.card-title, .card-text {
+    padding-left: 10px;
+}
+
+.btn-primary {
+    background-color: #F99417 !important;
+    color: white !important;
+    border: none !important;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+    position: absolute;
+    right: 295px;
+}
+
+.dark-mode .btn-primary {
+    background-color: #cc0001 !important;
+    color: white !important;
+}
+
+.dark-mode .btn-primary:hover {
+    background-color:  #a40000 !important;
+}
+
+.btn-primary:hover {
+    background-color: #E88315 !important;
+}

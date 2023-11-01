@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Scrum Tool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index_style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='task-details-modal_style.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='filter_and_sort_button_style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js"></script>
+
+</head>
+
+<body>
+    <div id="modal-container"></div>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h1 class="sidebar-title">Scrum Tool</h1>
+
+            <nav class="top-menu">
+                <a href="#">Product Backlog</a>
+                <a href="#">Scrum Board</a>
+            </nav>
+
+            <nav class="bottom-menu">
+                <a href="#">Profile</a>
+                <a href="#">Log out</a>
+            </nav>
+        </div>
+
+        <!-- Main Page Content -->
+        <div class="main-content">
+
+            <div class="header-section">
+                <h2 class="content-title">Product Backlog</h2>
+                <div class="header-buttons">
+                    <button class="btn create-task-btn" id="load-create-task-modal">Create Task</button>
+
+                    <div class="dropdown" id="sort-dropdown">
+                        <button class="sorting-button">
+                            <i class="bi bi-arrow-down-up"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <a type="button" id="sortNewToOld">Newest to Oldest</a>
+                            <a type="button" id="sortOldToNew">Oldest to Newest</a>
+                            <a type="button" id="sortLowToUrgent">Low to Urgent</a>
+                            <a type="button" id="sortUrgentToLow">Urgent to Low</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="filter-button">
+                            <i class="fas fa-filter"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <a type="button" id="frontEnd">Front End</a>
+                            <a type="button" id="backEnd">Back End</a>
+                            <a type="button" id="testing">Testing</a>
+                            <a type="button" id="database">Database</a>
+                            <a type="button" id="ui">UI</a>
+                            <a type="button" id="ux">UX</a>
+                            <a type="button" id="api">API</a>
+                            <a type="button" id="framework">Framework</a>
+                            <!-- Add more tag buttons as needed -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tasks-list" id="taskCardsContainer">
+
+            </div>
+            <!-- Add this modal template after the main content -->
+            <div class="modal fade" id="task-modal" tabindex="-1" aria-labelledby="task-modal-label" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="task-modal-label">Task Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Add content for task details here -->
+                        </div>
+                        <div class="modal-footer">
+                    
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <script>
+
+
+            $(document).ready(function () {
+                $("#load-create-task-modal").click(function () {
+                    // Load the modal content from external HTML file
+                    $("#modal-container").load("createTaskModal.html", function () {
+                        // Show the modal when content is loaded
+                        $("#create-task-modal").modal("show");
+                    });
+                });
+                $(".task-card").click(function () {
+                    // Load the modal content from external HTML file
+                    $("#modal-container").load("viewTaskModal.html", function () {
+                        // Show the modal when content is loaded
+                        $("#view-task-modal").modal("show");
+                    });
+                });
+            });
+
+
+            // list of example data for task cards
+            const values_example = [
+                {
+                    "name": "Ryan Choo",
+                    "storypoints": "1",
+                    "tags": ["front-end", "tag-testing"],
+                    "priority": "low",
+                },
+                {
+                    "name": "Ryan Choo",
+                    "storypoints": "1",
+                    "tags": ["front-end"],
+                    "priority": "low",
+                },
+                {
+                    "name": "Ryan Choo",
+                    "storypoints": "1",
+                    "tags": ["front-end"],
+                    "priority": "low",
+                },
+                {
+                    "name": "Ryan Choo",
+                    "storypoints": "1",
+                    "tags": ["front-end"],
+                    "priority": "low",
+                },
+                {
+                    "name": "Ryan Choo",
+                    "storypoints": "1",
+                    "tags": ["front-end"],
+                    "priority": "low",
+                },
+                {
+                    "name": "Ryan Choo",
+                    "storypoints": "1",
+                    "tags": ["front-end"],
+                    "priority": "low",
+                },
+                {
+                    "name": "Ryan Choo",
+                    "storypoints": "1",
+                    "tags": ["front-end"],
+                    "priority": "low",
+                },
+                {
+                    "name": "Ryan Choo",
+                    "storypoints": "1",
+                    "tags": ["front-end"],
+                    "priority": "low",
+                },
+                {
+                    "name": "Ryan Choo",
+                    "storypoints": "1",
+                    "tags": ["front-end"],
+                    "priority": "low",
+                },
+            ];
+
+            // function to add task card
+            function addTaskCard(taskName, priority, selectedTags, taskStoryPoints) {
+                const taskBox = document.createElement("div");
+                taskBox.className = "task-card";
+
+                const taskTitle = document.createElement("h3");
+                taskTitle.style.color = "#f99417";
+                taskTitle.textContent = taskName;
+
+                const taskPriority = document.createElement("p");
+                taskPriority.className = "task-priority"; // Set the class name
+                taskPriority.textContent = priority;
+
+
+                const taskTags = document.createElement("div");
+                taskTags.className = "tags";
+                // Append selected tags to the taskTags div
+                for (let i = 0; i < selectedTags.length; i++) {
+                    const tagElement = document.createElement("span");
+                    tagElement.className = "tag";
+                    tagElement.textContent = selectedTags[i];
+                    taskTags.appendChild(tagElement);
+                }
+
+                const storyPoints = document.createElement("span");
+                storyPoints.className = "story-points";
+                storyPoints.textContent = taskStoryPoints;
+
+                // Append name, priority, tags, story points accordingly 
+                taskBox.appendChild(taskTitle);
+                taskBox.appendChild(taskPriority);
+                taskBox.appendChild(taskTags);
+                taskBox.appendChild(storyPoints);
+
+                // Insert the new task box into the Product Backlog
+                document.querySelector(".tasks-list").appendChild(taskBox);
+            }
+
+            // generate list of task cards 
+            function GenerateTaskCards() {
+                for (let i = 0; i < values_example.length; i++) {
+                    addTaskCard(values_example[0]["name"], values_example[0]["priority"], values_example[0]["tags"], values_example[0]["storypoints"])
+                }
+            }
+
+            // call function to generate
+            GenerateTaskCards()
+
+            // when sort new to old is selected
+            const sortNewToOldButton = document.getElementById("sortNewToOld");
+            sortNewToOldButton.addEventListener("click", () => {
+                console.log("sort the data from newest to oldest")
+            })
+
+            // when sort old to new is selected
+            const sortOldToNewButton = document.getElementById("sortOldToNew");
+            sortOldToNewButton.addEventListener("click", () => {
+                console.log("sort the data from newest to oldest")
+            })
+
+            // when sort low to urgent is selected
+            const sortLowToUrgentButton = document.getElementById("sortLowToUrgent");
+            sortLowToUrgentButton.addEventListener("click", () => {
+                console.log("sort the data from low to urgent")
+            })
+
+            // when sort urgent to low is selected
+            const sortUrgentToLowButton = document.getElementById("sortUrgentToLow");
+            sortUrgentToLowButton.addEventListener("click", () => {
+                console.log("sort the data from urgent to low")
+            })
+
+            // when tag is selected for filtering
+            const frontEndButton = document.getElementById("frontEnd");
+            frontEndButton.addEventListener("click", () => {
+                console.log("filter by front end tags")
+            })
+
+            const backEndBUtton = document.getElementById("backEnd");
+            backEndBUtton.addEventListener("click", () => {
+                console.log("filter by back end tags")
+            })
+
+            const testingButton = document.getElementById("testing");
+            testingButton.addEventListener("click", () => {
+                console.log("filter by testing tags")
+            })
+
+            const databaseButton = document.getElementById("database");
+            databaseButton.addEventListener("click", () => {
+                console.log("filter by database tags")
+            })
+
+            const uiButton = document.getElementById("ui");
+            uiButton.addEventListener("click", () => {
+                console.log("filter by UI tags")
+            })
+
+            const uxButton = document.getElementById("ux");
+            uxButton.addEventListener("click", () => {
+                console.log("filter by UX tags")
+            })
+
+            const apiButton = document.getElementById("api");
+            apiButton.addEventListener("click", () => {
+                console.log("filter by api tags")
+            })
+
+            const frameworkButton = document.getElementById("framework");
+            frameworkButton.addEventListener("click", () => {
+                console.log("filter by framework tags")
+            })
+            $(document).ready(function () {
+                $("#load-create-task-modal").click(function () {
+                    // Load the modal content from external HTML file
+                    $("#modal-container").load("createTaskModal.html", function () {
+                        // Show the modal when content is loaded
+                        $("#create-task-modal").modal("show");
+                    });
+                });
+
+                // Handling task card click event to populate the modal with task details
+                $(".task-card").click(function () {
+                    const taskDetails = getTaskDetails($(this)); // to get task details
+                    populateModal(taskDetails);
+                    $("#task-modal").modal("show");
+                });
+            });
+
+          
+            function getTaskDetails(taskCard) {
+
+                const taskName = taskCard.find("h3").text();
+                const taskPriority = taskCard.find(".task-priority").text();
+                const taskTags = taskCard.find(".tags").html();
+                const taskStoryPoints = taskCard.find(".story-points").text();
+
+                return {
+                    name: taskName,
+                    priority: taskPriority,
+                    tags: taskTags,
+                    storypoints: taskStoryPoints,
+                };
+            }
+
+            // Populates the modal with task details
+            function populateModal(taskDetails) {
+                const modalBody = $("#task-modal .modal-body");
+                modalBody.html(""); // Clear previous content
+
+                // Creating HTML elements to display task details
+                const taskTitle = $("<h3>").text("Task Name:" + taskDetails.name);
+                const taskPriority = $("<p>").text("Priority: " + taskDetails.priority);
+                const taskTags = $("<div>").addClass("tags").html(taskDetails.tags);
+                const storyPoints = $("<span>").addClass("story-points").text("Story Points: " + taskDetails.storypoints);
+
+                // Appending task details to the modal body
+                modalBody.append(taskTitle, taskPriority, taskTags, storyPoints);
+            }
+
+
+
+
+
+        </script>
+</body>
+
+</html>

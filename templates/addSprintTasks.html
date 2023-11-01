@@ -1,0 +1,197 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='sprint_backlog.css') }}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<div class="modal fade" id="add-sprint-tasks-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="add-sprint-tasks" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-fullscreen-md-down modal-dialog-scrollable">
+        <div class="modal-content modal-content-custom" style="background-color: #f2f3f5;">
+            <div class="modal-header" style="background-color: #FF9417;">
+                <h1 class="modal-title fs-5" id="create-task" style="color: #ffffff;">Add Tasks To Sprint</h1>
+                <button type="button" class="btn-delete-close" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="bi bi-x-lg" style="font-size: 22px;"></i>
+                </button>
+            </div>
+            <form class="modal-body" id="add-task-form">
+                <div class="row">
+                    <div class="backlog-tasks-list" id="taskCardsContainer">
+                    </div>
+                    <div class="row">
+                        <div class="row create-button-row">
+                            <div class="col-12 create-button-col">
+                                <button type="submit" id="comfirm-sprint-tasks" class="btn comfirm-sprint-tasks-button"
+                                    data-bs-dismiss="modal">Add Tasks</button>
+                            </div>
+                        </div>
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    var sprint_id = {{ sprintID | tojson }};
+
+    $(document).ready(function () {
+        // Load modals
+        // $("#load-add-sprint-task-modal").click(function (e) {
+        //     e.preventDefault();
+        //     $("#modal-container").load("/addSprintTasksModal", function () {
+        //         $('#add-sprint-tasks-modal').modal('show');
+        //     });
+        // });
+
+        allTasks = []
+
+        // Function to add task card
+        function addTaskCard(taskId, taskName, priority, taskTags) {
+            const taskBox = document.createElement("div");
+            taskBox.className = "backlog-task-card";
+            taskBox.setAttribute("data-task-id", taskId);  // Assign the task ID to the card
+
+            const taskCheckbox = document.createElement("input");
+            taskCheckbox.type = "checkbox";
+            taskCheckbox.className = "task-checkbox";
+
+            const taskTitle = document.createElement("h3");
+            taskTitle.style.color = "#f99417";
+            // Check taskName length and truncate if needed
+            if (taskName.length > 20) {
+                taskTitle.textContent = taskName.substring(0, 20) + '...';
+            } else {
+                taskTitle.textContent = taskName;
+            }
+
+            const taskPriority = document.createElement("div");
+            taskPriority.textContent = priority;
+            // Set priority color class
+            switch (priority.toLowerCase()) {
+                case 'low':
+                    taskPriority.classList.add('priority-low');
+                    break;
+                case 'medium':
+                    taskPriority.classList.add('priority-medium');
+                    break;
+                case 'important':
+                    taskPriority.classList.add('priority-important');
+                    break;
+                case 'urgent':
+                    taskPriority.classList.add('priority-urgent');
+                    break;
+            }
+
+            const tagsDiv = document.createElement("div");
+            tagsDiv.className = "tags";
+
+            const moretags = document.createElement("span")
+            moretags.className = "moretags"
+            moretags.textContent = "..."
+
+            // Split the taskTags string into an array
+            const tagsArray = taskTags.split(',');
+
+            if (tagsArray.length > 3) {
+                for (let i = 0; i < Math.min(3, tagsArray.length); i++) {
+                    const tagElement = document.createElement("span");
+                    tagElement.className = "tag";
+                    tagElement.textContent = tagsArray[i].trim();
+                    tagsDiv.appendChild(tagElement);
+                }
+            } else {
+                for (let i = 0; i < tagsArray.length; i++) {
+                    const tagElement = document.createElement("span");
+                    tagElement.className = "tag";
+                    tagElement.textContent = tagsArray[i].trim();
+                    tagsDiv.appendChild(tagElement);
+                }
+            }
+
+            if (tagsArray.length > 3) {
+                tagsDiv.appendChild(moretags);
+            }
+
+            // Append elements to the task card
+            taskBox.appendChild(taskTitle);
+            taskBox.appendChild(taskPriority);
+            taskBox.appendChild(tagsDiv);
+            taskBox.appendChild(taskCheckbox);
+
+            // Insert the new task card into the Product Backlog
+            document.querySelector(".backlog-tasks-list").appendChild(taskBox);
+        }
+
+        function renderTasks(tasks) {
+            const tasksList = document.querySelector(".backlog-tasks-list");
+            tasksList.innerHTML = '';  // Clear the existing tasks
+            tasks.forEach(task => {
+                addTaskCard(task.taskID, task.taskName, task.taskPriority, task.taskTags);
+            });
+        }
+
+        // Function to generate task cards
+        function generateTaskCards() {
+            $.ajax({
+                url: "/backlog_tasks", // Assuming the frontend and backend are on the same domain
+                method: "GET",
+                success: function (data) {
+                    console.log("Fetched tasks:", data);
+                    allTasks = data; // save data in a list
+                    renderTasks(allTasks);
+                },
+                error: function (error) {
+                    console.error("Error fetching tasks:", error);
+                }
+            });
+        }
+        // Call function to generate tasks
+        generateTaskCards();
+    });
+
+    function addtask(taskId) {
+        $.ajax({
+            type: "PUT",
+            url: `/add_sprint_task/${taskId}/${sprint_id}`,
+            success: function (response) {
+                if (response.success) {
+                    console.log(`${response.message}`);
+                } else {
+                    console.error(`Failed to add task from backend: ${response.message}`);
+                }
+            }
+        });
+    }
+
+    $(document).ready(function () {
+
+        $('.comfirm-sprint-tasks-button').click(function () {
+            $('#add-sprint-tasks-modal').modal('show'); // Fixed the modal ID here
+        });
+
+        allTasks = [];
+
+        $('#add-task-form').submit(function (e) { // Fixed the form ID here
+            e.preventDefault();
+
+            const backlogTaskCards = document.querySelectorAll('.backlog-task-card');
+
+            backlogTaskCards.forEach(taskCard => {
+                const checkbox = taskCard.querySelector('.task-checkbox');
+
+                if (checkbox.checked) {
+                    const taskId = taskCard.getAttribute('data-task-id');
+                    // Check through the each backlog task and get the details from every one of them and add it to sprint backlog
+                    console.log(taskId);
+                    addtask(taskId);
+                }
+            });
+            location.reload()
+        });
+
+    });
+
+    $('.btn-delete-close').click(function () {
+        $('.modal-content').empty();
+        location.reload()
+    });
+
+
+</script>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='log_in_page.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Scrum Tool</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://kit.fontawesome.com/c926653068.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<body>
+    <div class="orange-top-bar">
+        <div class="title">Scrum Tool</div>
+    </div>
+
+    <div style="margin-top: 40px;"></div>
+
+    <div class="user-icon">
+        <i class="fa-solid fa-user"></i> <!-- Font Awesome Icons user icon -->
+    </div>
+
+    <div class="button-container">
+        <input type="text" class="custom-text-input" id="username-input" placeholder="Username">
+        <input type="password" class="custom-text-input" id="password-input" placeholder="Password">
+        <div style="margin-top: 15px;">
+            <button id="loginButton" class="login-button">Log In</button>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+
+        // get the relevant user data using the password
+        function getUserWithPassword() {
+
+            // get username input
+            var usernameInput = document.getElementById("username-input")
+            var username = usernameInput.value
+
+            // get password input
+            var passwordInput = document.getElementById("password-input")
+            var password = passwordInput.value
+
+            // display in console for checking
+            console.log("INPUT USERNAME : " + username)
+            console.log("INPUT PASSWORD : " + password)
+
+            // for storing data from database
+            var user
+
+            // Create an object to hold the login data
+            var loginData = {
+                username: username,
+                password: password
+            };
+
+            // Send a POST request to the /login route with the login data
+            $.ajax({
+                url: "/log_user_in",
+                method: "POST",
+                data: JSON.stringify(loginData), // Convert the data to JSON
+                contentType: "application/json; charset=utf-8", // Set the content type
+                success: function (data) {
+                    // Handle the response from the backend here
+                    // data should be the userID
+                    localStorage.setItem("user_id", data.user_id);
+                    window.location.href = '/productBacklog'; // Redirect to the appropriate page
+                },
+                error: function (error) {
+                    if (error.status === 401) {
+                        // Handle the specific error for a 401 Unauthorized status code.
+                        alert("Invalid username or password. Please try again.");
+                    } else {
+                        // General error handling.
+                        alert("Login failed. Please try again.");
+                    }
+                    console.error("Login failed:", error);
+                }
+
+            });
+
+
+
+            // // get user data
+            // var fetchuser = new Promise(function (resolve, reject) {
+            //     $.ajax({
+            //         url: "/getUserP/" + password,
+            //         method: "GET",
+            //         success: function (data) {
+            //             console.log("User:", data.user);
+            //             user = data.user // assign to user variable
+            //             resolve()
+
+            //         },
+            //         error: function (error) {
+            //             console.error("Invalid Username or Password", error);
+            //             reject()
+            //         }
+            //     });
+            // })
+
+            // Promise.all([fetchuser])
+            //     .then(function () {
+            //         // if password and username matches, load product backlog page
+            //         if (checkUsernameAndPassword(user, username)) {
+            //             localStorage.setItem("user_id", user.userID)
+            //             window.location.href = ('productBacklog')
+            //         }
+            //         // alert user that either one is invalid
+            //         else {
+            //             alert("Invalid username or password!")
+            //         }
+            //     })
+            //     .catch(function (error) {
+            //         console.error("Error:", error);
+            //     });
+        }
+
+        // use to check if username matches the password
+        // how does this work ???
+        function checkUsernameAndPassword(data, username) {
+            if (data.userName == username) {
+                return true
+            }
+            return false
+        }
+
+        // if login button is pressed 
+        $("#loginButton").click(function () {
+            console.log("LOGIN BUTTON CLICKED")
+            // login button click logic here
+            getUserWithPassword()  // call function to check
+        });
+    </script>
+
+</body>
+
+</html>

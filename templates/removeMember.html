@@ -1,0 +1,54 @@
+<!-- Modal -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<div class="modal fade" id="removeModal" tabindex="-1" role="dialog" aria-labelledby="removeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="removeModalLabel">Removing Team Member</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="icon-container">
+                    <div class="triangle-icon">
+                        <i class="fas fa-exclamation"></i>
+                    </div>
+                </div>
+                <div class="modal-text" style="font-size: 18px;">
+                Team member logged hours will be removed, and all task assigned to them will be assigned to admin. Do you want to proceed?
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" id="confirmRemove">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    userID = {{ userID | tojson }};
+
+    function removeUser(){
+        $.ajax({
+            url:"/remove_member/"+userID,
+            method: "DELETE",
+            success: function (response) {
+                console.log(response.message);
+            },
+            error: function (error) {
+                console.error(response.message);
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        $("#confirmRemove").on("click", function() {
+            removeUser();
+            $('#removeModal').modal('hide');
+            location.reload();
+        });
+    });
+</script>

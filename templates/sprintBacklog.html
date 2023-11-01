@@ -1,0 +1,481 @@
+<!doctype html> <!-- Declares the document to be HTML5 -->
+<html lang="en"> <!-- The language of the document is English -->
+
+<head>
+    <meta charset="utf-8"> <!-- Specifies the character encoding for the HTML document -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Makes the webpage responsive on mobile devices -->
+    <title>Scrum Tool</title> <!-- Title of the webpage -->
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='scrum_board.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='toggle.css') }}">
+
+    <!-- Link to a local CSS file for styling the sprint backlog -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='sprint_backlog.css') }}">
+
+    <!-- Link to a local CSS file for styling modals -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='modal_style.css') }}">
+
+    <!-- Link to a Google Font named 'Inter' with specified font weights -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+
+    <!-- Link to Bootstrap icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <!-- Link to Font Awesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <!-- Link to jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Link to Bootstrap CSS with integrity for Subresource Integrity (SRI) checking -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+    <!-- Link to Bootstrap JS with defer attribute (script will be executed after the page has been parsed) and with integrity for SRI checking -->
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div id="modal-container"></div>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h1 class="sidebar-title">Scrum Tool</h1>
+
+            <nav class="top-menu">
+                <a href="/productBacklog" class="sidebar-text">Product Backlog</a>
+                <a href="/scrumBoard" class="sidebar-text">Scrum Board</a>
+            </nav>
+
+            <!-- Image for Dark Mode -->
+            <img class= "theme-image" src="{{ url_for('static', filename='twin_tower.png') }}" alt="Description of Image">
+            <nav class="bottom-menu">
+                <a href="/manageTeam" class="sidebar-text" id="manage-team-button" style="display: none;">Manage Team</a>
+                <a href="profile" class="sidebar-text">Profile</a>
+                <div class="theme-switch-wrapper">
+                    <label class="theme-switch" for="checkbox">
+                        <input type="checkbox" id="checkbox" />
+                        <div class="slider round">
+                            <img
+                              src="https://flagcdn.com/16x12/my.png"
+                              srcset="https://flagcdn.com/32x24/my.png 2x,
+                                https://flagcdn.com/48x36/my.png 3x"
+                              width="12"
+                              height="10"
+                              alt="Malaysia"
+                              class="flag"
+                            >
+                        </div>
+                    </label>
+                </div>
+                <a type="button" class="sidebar-text" id="logout-btn">Log out</a>
+            </nav>
+        </div>
+
+        <!-- Main Page Content -->
+        <div class="main-content">
+
+            <!-- Greeting Message Section -->
+            <div class="greeting-section">
+                <a href="https://www.freeiconspng.com/img/41828" class="theme-greeting-image" title="Image from freeiconspng.com"><img src="https://www.freeiconspng.com/uploads/flag-malaysia-icon-pictures-2.png" width="100" alt="Flag Malaysia Icon Pictures" /></a>
+                <h1>Selamat Hari Malaysia</h1>
+                <a href="https://www.freeiconspng.com/img/41828" class="theme--greeting-image" title="Image from freeiconspng.com"><img src="https://www.freeiconspng.com/uploads/flag-malaysia-icon-pictures-2.png" width="100" alt="Flag Malaysia Icon Pictures" /></a>
+            </div>
+
+            <div class="header-section">
+                <h2 class="content-title">Sprint Backlog</h2>
+                <div class="sprint-status-indicator"></div>
+                <div class="header-buttons">
+                    <button class="btn add-task-btn" id="load-add-sprint-task-modal">Add Tasks</button>
+
+                    <button class="btn view-sprint-btn" id="load-view-sprint-modal">View Sprint Details</button>
+                    <!-- <button class="btn log-hours" id="log-hours-btn">Log Hours</button> -->
+                    <!-- <button class="btn log-hours" id="log-hours-btn">Log Hours</button> -->
+
+                    <div class="dropdown" id="sort-dropdown">
+                        <button class="sorting-button">
+                            <i class="bi bi-arrow-down-up"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <a type="button" id="sortNewToOld">Newest to Oldest</a>
+                            <a type="button" id="sortOldToNew">Oldest to Newest</a>
+                            <a type="button" id="sortLowToUrgent">Low to Urgent</a>
+                            <a type="button" id="sortUrgentToLow">Urgent to Low</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="filter-button">
+                            <i class="fas fa-filter"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <a type="button" id="myTask" data-filter="My Task">My Task</a>
+                            <a type="button" id="allTask" data-filter="All Task">All Tasks</a>
+                            <a type="button" id="frontEnd" data-filter="front end">Front End</a>
+                            <a type="button" id="backEnd" data-filter="back end">Back End</a>
+                            <a type="button" id="testing" data-filter="testing">Testing</a>
+                            <a type="button" id="database" data-filter="database">Database</a>
+                            <a type="button" id="ui" data-filter="ui">UI</a>
+                            <a type="button" id="ux" data-filter="ux">UX</a>
+                            <a type="button" id="api" data-filter="api">API</a>
+                            <a type="button" id="framework" data-filter="framework">Framework</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Not Started box-->
+            <div class="task-status-container">
+                <div class="notStarted-task-status-box" id="taskCardsContainer">
+                    <h3>Not Started</h3>
+                    <div class="not-started-task-list" id="task-status-container"></div>
+                </div>
+
+                <!-- In Progress box-->
+                <div class="inProgress-task-status-box" id="taskCardsContainer">
+                    <h3>In Progress</h3>
+                    <div class="in-progress-task-list" id="task-status-container"></div>
+                </div>
+
+                <!-- Completed box-->
+                <div class="completed-task-status-box" id="taskCardsContainer">
+                    <h3>Completed</h3>
+                    <div class="completed-task-list" id="task-status-container"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='toggle.js') }}"></script>
+    <script src="{{ url_for('static', filename='/manage_team_button.js') }}"></script>
+    <script src="{{ url_for('static', filename='/logout.js') }}"></script>
+    <script>
+        var sprintID = {{ sprintID | tojson }};
+        // get user id from localStorage which is initialised in the loginPage.html
+        var userID = localStorage.getItem("user_id");
+
+        $(document).ready(function () {
+            // Load modals
+            $("#load-add-sprint-task-modal").click(function (e) {
+                e.preventDefault();
+                $("#modal-container").load("/addSprintTasksModal/" + sprintID, function () {
+                    $('#add-sprint-tasks-modal').modal('show');
+                });
+            });
+        });
+        $(document).ready(function () {
+            // Load modals
+            $("#load-view-sprint-modal").click(function (e) {
+                e.preventDefault();
+                $("#modal-container").load("/viewSprintModal/" + sprintID, function () {
+                    $("#view-sprint-modal").modal("show");
+                });
+            });
+        });
+
+        $(document).on("click", ".sprint-task-card", function (e) {
+            e.preventDefault();
+            // console.log("Task card clicked!");
+            const taskId = $(this).attr("data-task-id");  // Get the task ID from  clicked card
+            // load the task modal with details specific to this ID
+            $("#modal-container").load("/sprintViewTaskModal/" + taskId, function () {
+                $("#sprint-view-task-modal").modal("show");
+            });
+        });
+
+
+
+
+        sprintTasks = []
+
+        function addTaskCard(taskId, taskName, priority, taskTags, taskStoryPoints, taskStatus, assigneeID) {
+            const taskBox = document.createElement("div");
+            taskBox.className = "sprint-task-card";
+            taskBox.setAttribute("data-task-id", taskId);  // Assign the task ID to the card
+
+            const taskTitle = document.createElement("h3");
+            taskTitle.style.color = "#f99417";
+            // Check taskName length and truncate if needed
+            if (taskName.length > 15) {
+                taskTitle.textContent = taskName.substring(0, 15) + '...';
+            } else {
+                taskTitle.textContent = taskName;
+            }
+
+            const taskPriority = document.createElement("div");
+            taskPriority.textContent = priority;
+            // Set priority color class
+            switch (priority.toLowerCase()) {
+                case 'low':
+                    taskPriority.classList.add('priority-low');
+                    break;
+                case 'medium':
+                    taskPriority.classList.add('priority-medium');
+                    break;
+                case 'important':
+                    taskPriority.classList.add('priority-important');
+                    break;
+                case 'urgent':
+                    taskPriority.classList.add('priority-urgent');
+                    break;
+            }
+
+            const tagsDiv = document.createElement("div");
+            tagsDiv.className = "tags";
+
+            const moretags = document.createElement("span")
+            moretags.className = "moretags"
+            moretags.textContent = "..."
+
+            // Split the taskTags string into an array
+            const tagsArray = taskTags.split(',');
+
+            // Loop through the tags and add the first two
+            if (tagsArray.length > 1) {
+                for (let i = 0; i < Math.min(1, tagsArray.length); i++) {
+                    const tagElement = document.createElement("span");
+                    tagElement.className = "tag";
+                    tagElement.textContent = tagsArray[i].trim();
+                    tagsDiv.appendChild(tagElement);
+                }
+            } else {
+                for (let i = 0; i < Math.min(1, tagsArray.length); i++) {
+                    const tagElement = document.createElement("span");
+                    tagElement.className = "tag";
+                    tagElement.textContent = tagsArray[i].trim();
+                    tagsDiv.appendChild(tagElement);
+                }
+            }
+
+            if (tagsArray.length > 1) {
+                tagsDiv.appendChild(moretags);
+            }
+
+            const storyPointsLabel = document.createElement("span");
+            storyPointsLabel.className = "story-points-label";
+            storyPointsLabel.textContent = "Story points :";
+
+            const storyPoints = document.createElement("span");
+            storyPoints.className = "story-points";
+            storyPoints.textContent = taskStoryPoints;
+
+            const logHoursBtn = document.createElement("button")
+            logHoursBtn.className = "btn log-hours"
+            logHoursBtn.id = "log-hours-btn"
+            logHoursBtn.textContent = "Log Hours"
+
+            logHoursBtn.addEventListener('click', function () {
+                event.stopPropagation();
+                $("#modal-container").load("/logHoursModal/" + taskId, function () {
+                    $('#log-hours-modal').modal('show');
+                });
+            });
+
+            // Append elements to the task card
+            taskBox.appendChild(taskTitle);
+            taskBox.appendChild(taskPriority);
+            taskBox.appendChild(tagsDiv);
+            taskBox.appendChild(storyPoints);
+            taskBox.appendChild(storyPointsLabel);
+
+
+            if (user_id == assigneeID) {
+                taskBox.appendChild(logHoursBtn);
+
+            }
+            //taskBox.appendChild(logHoursBtn);
+
+            // Insert the new task card into the Product Backlog
+            if (taskStatus == "Not Started") {
+                document.querySelector(".not-started-task-list").appendChild(taskBox);
+            } else if (taskStatus == "In Progress") {
+                document.querySelector(".in-progress-task-list").appendChild(taskBox);
+            } else {
+                document.querySelector(".completed-task-list").appendChild(taskBox);
+            }
+        }
+
+        function renderTasks(tasks) {
+            const notStartedTasksList = document.querySelector(".not-started-task-list");
+            notStartedTasksList.innerHTML = '';  // Clear the existing tasks
+
+            const inProgressTasksList = document.querySelector(".in-progress-task-list");
+            inProgressTasksList.innerHTML = '';  // Clear the existing tasks
+
+            const completedTasksList = document.querySelector(".completed-task-list");
+            completedTasksList.innerHTML = '';  // Clear the existing tasks
+
+            tasks.forEach(task => {
+                addTaskCard(task.taskID, task.taskName, task.taskPriority, task.taskTags, task.taskNumStoryPoint, task.taskStatus, task.assigneeID);
+            });
+        }
+
+        // Function to generate task cards
+        function generateTaskCards() {
+            $.ajax({
+                url: "/sprint_backlog_tasks/" + sprintID, // Assuming the frontend and backend are on the same domain
+                method: "GET",
+                success: function (data) {
+                    console.log(`Fetched ${data.length} tasks in sprint`);
+                    sprintTasks = data; // save data in a list
+                    renderTasks(sprintTasks);
+                },
+                error: function (error) {
+                    console.error("Error fetching tasks:", error);
+                }
+            });
+        }
+        // Call function to generate tasks
+        generateTaskCards();
+
+        function renderStatus(status) {
+            // const notStartedTasksList = document.querySelector(".not-started-sprint-status-indicator");
+            // notStartedTasksList.outerHTML = '';
+
+            // const inProgressTasksList = document.querySelector(".active-sprint-status-indicator");
+            // inProgressTasksList.outerHTML = '';
+
+            // const completedTasksList = document.querySelector(".completed-sprint-status-indicator");
+            // completedTasksList.outerHTML = '';
+
+            const NstatusBox = document.createElement("div")
+            NstatusBox.className = "not-started-sprint-status-indicator"
+            NstatusBox.textContent = "Not Started"
+
+            const AstatusBox = document.createElement("div")
+            AstatusBox.className = "active-sprint-status-indicator"
+            AstatusBox.textContent = "Active"
+
+            const CstatusBox = document.createElement("div")
+            CstatusBox.className = "completed-sprint-status-indicator"
+            CstatusBox.textContent = "Completed"
+
+
+            if (status == "Not Started") {
+                document.querySelector(".sprint-status-indicator").appendChild(NstatusBox);
+            } else if (status == "Active") {
+                document.querySelector(".sprint-status-indicator").appendChild(AstatusBox);
+            } else if (status == "Completed") {
+                document.querySelector(".sprint-status-indicator").appendChild(CstatusBox);
+            }
+
+            const addTaskButton = document.getElementById('load-add-sprint-task-modal');
+
+            if (status === 'Active' || status === 'Completed') {
+                addTaskButton.style.display = 'none';  // Hide the button
+            } else {
+                addTaskButton.style.display = 'block'; // Show the button
+            }
+        }
+
+        function getSprintStatus() {
+            $.ajax({
+                url: "/get_sprint_status/" + sprintID,
+                method: "GET",
+                success: function (data) {
+                    renderStatus(data.sprintStatus);
+                },
+                error: function (error) {
+                    console.error("Error getting sprint Status:", error);
+                }
+            });
+        }
+        // To render the sprint status
+        getSprintStatus();
+
+
+
+        document.body.addEventListener("click", function (e) {
+            // Check if the clicked element has a 'data-filter' attribute
+            if (e.target && e.target.getAttribute("data-filter")) {
+                const filterType = e.target.getAttribute("data-filter");
+                // Check if the clicked element is one of the first two options
+                if (e.target.id === "myTask") {
+                    const myTasks = filterMyTasks();
+                    renderTasks(myTasks);
+                } else if (e.target.id === "allTask") {
+                    renderTasks(sprintTasks);
+
+                } else {
+                    // Filter tasks by the selected tag
+                    const filteredTasks = filterByTag(filterType.toLowerCase());
+                    // Render the filtered tasks
+                    renderTasks(filteredTasks);
+                }
+            }
+        });
+
+
+        const priorityMap = {
+            "urgent": 4,
+            "important": 3,
+            "medium": 2,
+            "low": 1
+        };
+
+
+        function sortByNewest(a, b) {
+            // Extracting date from the 'taskDateCreated' attribute
+            return new Date(b.taskDateCreated) - new Date(a.taskDateCreated);
+        }
+
+        function sortByOldest(a, b) {
+            return new Date(a.taskDateCreated) - new Date(b.taskDateCreated);
+        }
+
+        function sortByLowToUrgent(a, b) {
+            return priorityMap[a.taskPriority.toLowerCase()] - priorityMap[b.taskPriority.toLowerCase()];
+        }
+
+        function sortByUrgentToLow(a, b) {
+            return priorityMap[b.taskPriority.toLowerCase()] - priorityMap[a.taskPriority.toLowerCase()];
+        }
+
+
+        function filterByTag(tag) {
+            return sprintTasks.filter(task => task.taskTags.toLowerCase().includes(tag));
+        }
+
+        function filterMyTasks() {
+            return sprintTasks.filter(task => task.assigneeID == userID);
+        }
+
+        // When sort new to old is selected
+        const sortNewToOldButton = document.getElementById("sortNewToOld");
+        sortNewToOldButton.addEventListener("click", () => {
+            sprintTasks.sort(sortByNewest); // Sort the array using the newest sorting function
+            renderTasks(sprintTasks); // Re-render tasks
+            // console.log("Sorted the data from newest to oldest");
+        });
+
+        // When sort old to new is selected
+        const sortOldToNewButton = document.getElementById("sortOldToNew");
+        sortOldToNewButton.addEventListener("click", () => {
+            sprintTasks.sort(sortByOldest); // Sort the array using the oldest sorting function
+            renderTasks(sprintTasks); // Re-render tasks
+            // console.log("Sorted the data from oldest to newest");
+        });
+
+        // when sort low to urgent is selected
+        const sortLowToUrgentButton = document.getElementById("sortLowToUrgent");
+        sortLowToUrgentButton.addEventListener("click", () => {
+            sprintTasks.sort(sortByLowToUrgent); // Sort the array using the low-to-urgent sorting function
+            renderTasks(sprintTasks); // Re-render tasks
+            // console.log("Sorted the data from low to urgent");
+        });
+
+        // when sort urgent to low is selected
+        const sortUrgentToLowButton = document.getElementById("sortUrgentToLow");
+        sortUrgentToLowButton.addEventListener("click", () => {
+            sprintTasks.sort(sortByUrgentToLow); // Sort the array using the urgent-to-low sorting function
+            renderTasks(sprintTasks); // Re-render tasks
+            // console.log("Sorted the data from urgent to low");
+        });
+
+    </script>
+
+</body>
+
+</html>

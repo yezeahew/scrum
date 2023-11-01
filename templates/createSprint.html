@@ -1,0 +1,76 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='view_sprint.css') }}"> -->
+<link rel="stylesheet" href="{{ url_for('static', filename='sprint_modal.css') }}">
+
+
+<!-- Create Sprint Modal -->
+<div class="modal fade sprint-modal" id="create-sprint-modal" tabindex="-1" aria-labelledby="createSprintModalLabel"
+    aria-hidden="true">
+    <!-- <div class="modal fade" id="create-sprint-modal" tabindex="-1" aria-labelledby="createSprintModalLabel" aria-hidden="true"> -->
+    <div class="modal-dialog modal-dialog-scrollable modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createSprintModalLabel">Create Sprint</h5>
+                <div>
+                    <button type="button" class="btn-delete-close" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="bi bi-x-lg" style="font-size: 22px;"></i>
+                    </button>
+                </div>
+                <!--<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+            </div>
+            <div class="modal-body">
+                <div class="info-box">
+                    <h6>Sprint Name</h6>
+                    <p id="sprintName" contenteditable="true">Place Holder</p>
+                </div>
+                <!-- Notice about automatic sprint status selection based on dates -->
+                <div class="info-box">
+                    <h6>Sprint Status</h6>
+                    <p><i>Note: The sprint status is automatically determined by the sprint's start and end dates</i></p>
+                    <div class="row">
+                        <div class="col-auto px-2">
+                            <input type="radio" class="btn-check" name="sprint-status" id="not-started"
+                                autocomplete="off" checked disabled>
+                            <label class="btn btn-custom-normal" for="not-started">Not Started</label>
+                        </div>
+                        <div class="col-auto px-2">
+                            <input type="radio" class="btn-check" name="sprint-status" id="active" autocomplete="off" disabled>
+                            <label class="btn btn-custom-normal" for="active">Active</label>
+                        </div>
+                        <div class="col-auto px-2">
+                            <input type="radio" class="btn-check" name="sprint-status" id="completed"
+                                autocomplete="off" disabled>
+                            <label class="btn btn-custom-normal" for="completed">Completed</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- 
+                <div class="info-box">
+                    <div class="row">
+                        <h6>Sprint Status</h6>
+                    </div>
+                    
+                </div>-->
+
+                <div class="info-box">
+                    <h6><input type="checkbox" id="setDates" name="setDates">
+                        Include Sprint Dates </h6>
+
+                    Start: <span class="sprint-details-time-box">
+                        <input class="sprint-details-time-box" type="date" id="startDateInput" disabled>
+                    </span>
+                    End: <span class="sprint-details-time-box">
+                        <input class="sprint-details-time-box" type="date" id="endDateInput" disabled>
+                    </span>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" id="create-sprint-button" class="btn btn-create-button">Create Sprint</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    

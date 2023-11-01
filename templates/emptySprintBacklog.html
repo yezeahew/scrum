@@ -1,0 +1,67 @@
+<!-- please ignore this file I made this for testing -->
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Scrum Tool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index_style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modal_style.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div id="modal-container"></div>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h1 class="sidebar-title">Scrum Tool</h1>
+
+            <nav class="top-menu">
+                <a href="#">Product Backlog</a>
+                <a href="#">Scrum Board</a>
+            </nav>
+
+            <nav class="bottom-menu">
+                <a href="#">Profile</a>
+                <a href="#">Log out</a>
+            </nav>
+        </div>
+
+        <!-- Main Page Content -->
+        <div class="main-content">
+
+            <div class="header-section">
+                <h2 class="content-title">Sprint Backlog</h2>
+                <svg xmlns="http://www.w3.org/2000/svg" width="450" height="450" viewBox="0 0 100 100">
+                    <!-- White Background -->
+                    <circle cx="50" cy="50" r="40" fill="white" stroke="black" stroke-width="2" />
+                    
+                    <!-- Eyes -->
+                    <circle cx="35" cy="45" r="5" fill="black" />
+                    <circle cx="65" cy="45" r="5" fill="black" />
+                    
+                    <!-- Frown Mouth -->
+                    <path d="M30 70 Q50 50, 70 70" stroke="black" stroke-width="3" fill="none" />
+                </svg>
+                    <div class="footer-buttons">
+                        <h1>Looks Empty in here, Eh?</h1>
+                        <button class="btn add-task-btn" id="load-add-task-modal">Add Tasks</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='generate_task.js') }}"></script>
+
+

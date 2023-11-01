@@ -1,0 +1,403 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 3px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #F99417; /* Color of the thumb (the draggable part) */
+  border-radius: 10px; /* Round the edges of the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #0056b3; /* Color when hovered */
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent; /* Color of the track (the non-draggable part) */
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 250px;
+    background-color: #F99417;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.sidebar-title {
+    text-align: center;
+    margin-top: 22px;
+    margin-bottom: 50px;
+    font-size: 33px;
+    font-family:'Courier New', Courier, monospace;
+    font-weight:900 ;
+}
+
+.top-menu {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.bottom-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+/* side menu text (product backlog etc)*/
+nav a {
+    font-size: 20px;
+    display: block;
+    text-align: left;
+    padding-left: 10px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: rgba(245, 245, 245, 0.827);
+}
+
+nav a:hover {
+    color: white !important;
+}
+
+/* main section */
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.content-title {
+    color: #F99417;
+    margin: 0;
+    margin-top: 20px;
+    font-size: 35px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.header-buttons {
+    display: flex;
+    align-items: center;
+    margin-right: 50px;
+}
+
+.view-stats-btn {
+    background-color: #F99417 !important;
+    color: white !important;
+    border: none !important;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+}
+
+
+.dark-mode .view-stats-btn, .dark-mode .add-team-member-btn, .dark-mode .remove-member {
+    background-color: #cc0001 !important;
+    color: white !important;
+}
+
+.dark-mode .view-stats-btn:hover, .dark-mode .add-team-member-btn:hover, .dark-mode .remove-member:hover {
+    background-color:  #a40000 !important;
+}
+
+.add-team-member-btn {
+    background-color: #F99417 !important;
+    color: white !important;
+    border: none !important;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+}
+
+.remove-modal-content {
+    background-color: #fff;
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center; /* Center-align the text */
+}
+
+.add-team-member-btn:hover {
+    background-color: #E88315 !important;
+}
+
+.team-list{
+    overflow-y: auto;
+}
+
+.team-list .user-card {
+    position: relative; /* Set user-card to relative positioning */
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between; /* Center elements horizontally */
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.user-card {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+}
+
+.user-info-container {
+    flex: 1; /* Allow user info container to take remaining space */
+}
+
+.user-info-container h3,
+.user-info-container h2 {
+    user-select: none; /* Disable text selection for h3 and h2 elements inside .user-info-container */
+}
+
+.user-card h3 {
+    flex-basis: 100%;
+    margin-bottom: 5px;
+    font-size: 30px;
+    font-weight: bold;
+}
+.user-card h2{
+    flex-basis: 100%;
+    font-size: large;
+    font-weight: bold;
+}
+
+.remove-member {
+    background-color: #f99417 !important;
+    font-weight: 500 !important;
+    color: white !important; 
+    border: none !important; 
+    border-radius: 5px !important; 
+    padding: 4px 20px !important;
+    cursor: pointer !important;
+}
+
+.remove-member:hover {
+    background-color: #e88315 !important;
+}
+
+/* Add Members Modal */
+.modal-content-custom{
+    width: 55%;
+    border-radius: 20px;
+    margin: 0 auto; /* Horizontally center the modal */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Vertically center the modal */
+}
+
+.btn-delete-close {
+    border-radius: 20%; /* Use a border-radius of 50% to make it a circle */
+    background-color: white; /* Optionally set the background color to transparent */
+    color: black;
+    border: 10px;
+    transition: background-color 0.3s;
+}
+
+.create-button-col {
+    margin-top: 20px; /* Adjust the margin-top value to move the button further below */
+}
+
+.confirm-add-member-button{
+    font-weight: bold;
+    background-color: #F99417 !important;
+    color: white !important;
+    border: none !important;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+}
+
+.text-end {
+    text-align: right; /* Align the text (button) to the right */
+}
+
+#invalid-member-name,
+#invalid-member-email,
+#invalid-member-password {
+    color: red;
+    user-select: none;
+}
+
+
+.confirm-remove-member-button{
+    font-weight: bold;
+    background-color: #F99417 !important;
+    color: white !important;
+    border: none !important;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+}
+
+.reject-remove-member-button{
+    font-weight: bold;
+    background-color: #F99417 !important;
+    color: white !important;
+    border: none !important;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+}
+
+
+.yes-button-col {
+    margin-top: 20px; /* Adjust the margin-top value to move the button further below */
+}
+
+.no-button-col {
+    margin-top: 20px; /* Adjust the margin-top value to move the button further below */
+}
+
+.confirm-remove-member-button{
+    font-weight: bold;
+    background-color: #F99417 !important;
+    color: white !important;
+    border: none !important;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+    float: right;
+}
+
+.reject-remove-member-button{
+    font-weight: bold;
+    background-color: #F99417 !important;
+    color: white !important;
+    border: none !important;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+    float: left;
+}
+
+
+.modal-content-custom-remove{
+    width: 40%;
+    border-radius: 20px;
+    margin: 0 auto; /* Horizontally center the modal */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Vertically center the modal */
+}
+
+
+/* size of the modal */
+.modal-dialog {
+    max-width: 700px;
+    width: auto;
+}
+
+/* Center the modal on the page */
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#removeModal .modal-header {
+    background-color: #F99417;
+    color: white;
+    height: 50px;
+}
+
+#removeModal .btn-primary, #removeModal .btn-secondary {
+    background-color: #F99417;
+    border-color: #F99417;
+    color: white;
+}
+
+#removeModal .btn-primary:hover, #removeModal .btn-secondary:hover {
+    background-color: #d68315; 
+    border-color: #d68315;
+}
+
+#removeModal .modal-body {
+    color: #7F8487;
+    text-align: center;
+}
+
+#removeModal .modal-text {
+    margin-top: 80px; 
+    color: #7F8487;
+    text-align: center;
+    font-size: 22px;
+}
+
+#removeModal .modal-footer {
+    border-top: none;
+    justify-content: center;
+}
+
+/* space between the Yes and No buttons */
+#removeModal .btn-secondary, #removeModal .btn-primary {
+    margin: 0 40px; 
+}
+
+/* background color */
+#removeModal .modal-body, #removeModal .modal-footer {
+    background-color: #F2F3F5;
+}
+
+#removeModal .close {
+    background-color: white;
+    width: 40px;
+    height: 35px;
+    border: 1px solid #000;
+    border-radius: 10px;  
+    color: black;  
+}
+
+.icon-container {
+    display: flex;
+    justify-content: center;
+    height: 50px; 
+}
+
+.triangle-icon {
+    width: 0;
+    height: 0;
+    border-left: 60px solid transparent;
+    border-right: 60px solid transparent;
+    border-bottom: 102px solid red;
+    position: relative;
+}
+
+.fas.fa-exclamation {
+    color: white;
+    position: absolute;
+    top: 65px;
+    transform: translate(-50%, -50%);
+    font-size: 60px;
+}
